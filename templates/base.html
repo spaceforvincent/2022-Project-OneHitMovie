@@ -16,83 +16,71 @@
   
 </head>
 <body class="bg-success">
-  <div class="container">
-  	{% comment %} 로그인 상태의 출력 {% endcomment %}
-    {% if request.user.is_authenticated%}
-    <nav id = 'nav' class="navbar navbar-expand-lg navbar-light bg-success border-bottom">
-      <a class="navbar-brand text-warning" href="{% url 'movies:index' %}"><h1>일타무비</h1></a>
-      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
-              data-target="#navbarNav" aria-controls="navbarNav"
-              aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+  {% comment %} 로그인 상태의 출력 {% endcomment %}
+  {% if request.user.is_authenticated%}
+  
+  <nav class="navbar navbar-expand-lg bg-success">
+    <div class="d-flex container-fluid">
+      <a class="navbar-brand mx-5 " href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
+      <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <small>메뉴</small>
       </button>
-      
-
-      <form class="d-flex ms-5 ps-5" method="POST" action="{% url 'movies:search' %}">
-        {% csrf_token %}        
-        <input class="form-control me-2" type="search" placeholder="Search" name="searched" aria-label="Search">
-        <button class="btn btn-outline-warning" type="submit"> Search </button>
-    </form>
-      {% comment %} <div class = "d-flex justify-content-center">
-        <form action= "" method="post"> 
-            <div class = "d-flex">  
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="찾기" class="mt-4 mx-2 btn btn-primary btn-sm" style="height: 40px;">
-        </div>
-        </form>
-    </div> {% endcomment %}
-    
-
-      <div class="d-flex justify-content-end collapse navbar-collapse flse-grow-0" id="navbarNav">
-          <ul class="navbar-nav">
-              <li class=" d-flex form-group nav-item">
-              {% comment %} 현재 로그인 되어있는 유저 정보 출력 {% endcomment %}
-                <a class="nav-link active text-warning" href="{% url 'accounts:profile' user.username%}">MyDays</a>                                                                
-                  <a class="nav-link active text-warning" href="{% url 'movies:index' %}">
-                    <form action="{% url 'accounts:logout' %}" method = "POST">
-                      {% csrf_token %}
-                      <input class = "text-warning"style="border:none; background:none;" type="submit" value = "Logout">
-                    </form>
-                    </a>                
-                    <a class="nav-link active text-warning" href="{% url 'accounts:update' %}">EditInfo</a>
-                    <a class="nav-link active text-warning" href="{% url 'movies:index' %}">
-                    <form action="{% url 'accounts:delete' %}" method = 'POST'>
-                      {% csrf_token %}
-                      <input class = "text-warning" style="border:none; background:none;" type="submit" value = "Withdrawal">
-                    </form>
-                  </a>
-              </li>
-          </ul>
+      <div class="collapse navbar-collapse mx-5 " id="navbarSupportedContent">
+        
+        <form class="d-flex mx-5 " method="POST" action="{% url 'movies:search' %}">
+          {% csrf_token %}        
+          <input class="form-control me-2 " style="width:280px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
+          <button class="btn btn-outline-warning" style="width: 80px;" type="submit"> Search </button>
+      </form>
+        <ul class="navbar-nav ms-3 justify-content-end">
+          <li class="nav-item">
+            <a class="nav-link active text-warning " href="{% url 'accounts:profile' user.username %}"><b>마이페이지</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active text-warning" href="{% url 'movies:index' %}">
+              <form action="{% url 'accounts:logout' %}" method = "POST">
+                {% csrf_token %}
+                <input class = "text-warning" style="border:none; background:none;" type="submit" value = "로그아웃">
+              </form>
+            </a>
+          </li>
+        </ul>
+        
       </div>
+    </div>
   </nav>
+  <hr>
+  
+  
   {% comment %} 비로그인 상태의 출력 {% endcomment %}
     {% else %}
-    <nav id = 'nav' class=" navbar navbar-expand-lg navbar-light bg-success border-bottom">
-        <a class="navbar-brand text-warning" href="{% url 'movies:index' %}"><h1>일타무비</h1></a>
-      <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
-              data-target="#navbarNav" aria-controls="navbarNav"
-              aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <form class="d-flex ms-5 ps-5" method="POST" action="{% url 'movies:search' %}">
-        {% csrf_token %}        
-        <input class="form-control me-2" type="search" placeholder="Search" name="searched" aria-label="Search">
-        <button class="btn btn-outline-warning" type="submit"> Search </button>
-    </form>
-
-      <div class="d-flex justify-content-end collapse navbar-collapse flse-grow-0" id="navbarNav">
-          <ul class="navbar-nav">
-              <li class="d-flex nav-item ">
-                {% comment %} 로그인 링크 작성 {% endcomment %}
-                <a class = "nav-link active text-warning" href="{% url 'accounts:login' %}">Login</a>
-                <a class = "nav-link active text-warning" href="{% url 'accounts:signup' %}">SignUp</a>                  
-                    
-              </li>
+    
+    <nav class="navbar navbar-expand-lg bg-success">
+      <div class="d-flex container-fluid">
+        <a class="navbar-brand mx-5 " href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
+        <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <small>메뉴</small>
+        </button>
+        <div class="collapse navbar-collapse mx-5 justify-content-end" id="navbarSupportedContent">
+          
+          <form class="d-flex mx-5 " method="POST" action="{% url 'movies:search' %}">
+            {% csrf_token %}        
+            <input class="form-control me-2 " style="width:253px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
+            <button class="btn btn-outline-warning" style="width: 70px;" type="submit"> Search </button>
+        </form>
+          <ul class="navbar-nav mx-5 justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link active text-warning " href="{% url 'accounts:login'%}"><b>로그인</b></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active text-warning" href="{% url 'accounts:signup' %}">회원가입</a>
+            </li>
           </ul>
+          
+        </div>
       </div>
-  </nav>
+    </nav>
+    <hr>
       
     {% endif %}
     {% block content %}

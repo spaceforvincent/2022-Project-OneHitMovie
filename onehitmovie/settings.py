@@ -193,4 +193,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',  # => 기본적으로 인증받아야 사용
     ],
 }
-

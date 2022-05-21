@@ -12,9 +12,14 @@ from django.db.models import Avg
 @require_safe
 def index(request):
     this_month_movies = Movie.objects.filter(vote_avg__gte = 8.0, released_date__month=datetime.datetime.now().strftime ("%m"))[:20]
+    if datetime.datetime.now().strftime ("%m")[0] == '0':
+        this_month = datetime.datetime.now().strftime ("%m")[1]
+    else:
+        this_month = datetime.datetime.now().strftime ("%m")
+    
     context = {
         'this_month_movies' : this_month_movies,
-        'this_month' : datetime.datetime.now().strftime ("%m") 
+        'this_month' : this_month 
     }
     return render(request, 'movies/index.html', context)
 

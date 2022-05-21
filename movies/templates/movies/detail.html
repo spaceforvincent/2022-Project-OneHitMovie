@@ -1,72 +1,110 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="text-light mt-3">{{movie.title}}</h1>
-  <div class= 'd-flex justify-content-between text-light'>
-  
-  <div class="d-flex justify-content-end">
-  <div class='d-flex mx-5'>
-  </div>
-  </div>
-</div>
-  <hr>
-  <div class='d-flex text-light'>
-  <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
-  <p class="mx-3">{{ movie.overview|linebreaks }}</p>
-  <hr>
-</div>
+<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
+<style>
+.bd-sidebar {
+  position: sticky;
+  top: 4rem;
+  z-index: 1000;
+  height: 1000px;
+  background: yellowgreen;
+  border-right: 1px solid rgba(0,0,0,.1);
+  overflow-y: auto;
+  min-width: 160px;
+  max-width: 200px;
+}
+.bd-sidebar .nav {
+  display: block;
+}
+.bd-sidebar .nav>li>a {
+  display: block;
+  padding: .25rem 1.5rem;
+  font-size: 90%;
+}
+</style>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 
-<div class='d-flex justify-content-center my-5'>
-  <form class="like-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
-    {% csrf_token %}
-    {% if user in movie.like_users.all %}
-    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
-    <span id="like-count-{{ movie.pk }}" class="text-light fs-5"> {{movie.like_users.all|length}} </span>
-    {% else %}
-    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:white;"></i></button>
-    <span id="like-count-{{ movie.pk }}" class="text-light fs-5">{{movie.like_users.all|length}}</span>
-    {% endif %}
-  </form>
-  </div>
-
-  <hr>
-  <h4 class="text-light"> 댓글목록 </h4>
-  {% if comments%}
-    <p class="text-light"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
-  {% endif %}
-  <ul>
-  {% for comment in comments %}
-  <li class='d-flex'>
-    <p class="mx-3 text-light fs-5">{{comment.user}} : </p> <p class="mx-3 text-light fs-5">{{comment.content}}</p> 
-    <p class="mx-3 fs-5 mb-3 text-warning">
-      {{comment.get_rating_display}}
-    </p> 
-    {% if comment.user == request.user %}
-    {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
-    <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">
+<div class="container-fluid ">
+  <div class="row flex-nowrap">
+    <div class="col-3 bd-sidebar">
+      <h5 class='d-flex justify-content-center'>연관상품추천</h5>
+      <ul class="nav">
+        <li><a>Side 1</a></li>
+        <li><a>Side 2</a></li>
+        <li><a>Side 3</a></li>
+        <li><a>Side 4</a></li>
+        <li><a>Side 5</a></li>
+        <li><a>Side 6</a></li>
+        <li><a>Side 7</a></li>
+        <li><a>Side 8</a></li>
+      </ul>
+      <br>
+    </div>
+    <main class="col-9 py-md-3 pl-md-5 bd-content" role="main">
+      <h1 class="text-light mt-3 mx-3">{{movie.title}}</h1>
+      <hr>
+      <div class='d-flex text-light mx-3'>
+      <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
+      <p class="mx-3">{{ movie.overview|linebreaks }}</p>
+      <hr>
+    </div>
+    
+    <div class='d-flex justify-content-center my-5'>
+      <form class="like-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
+        {% csrf_token %}
+        {% if user in movie.like_users.all %}
+        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
+        <span id="like-count-{{ movie.pk }}" class="text-light fs-5"> {{movie.like_users.all|length}} </span>
+        {% else %}
+        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:white;"></i></button>
+        <span id="like-count-{{ movie.pk }}" class="text-light fs-5">{{movie.like_users.all|length}}</span>
+        {% endif %}
+      </form>
+      </div>
+    
+      <hr>
+      <h4 class="text-light"> 댓글목록 </h4>
+      {% if comments%}
+        <p class="text-light"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
+      {% endif %}
+      <ul>
+      {% for comment in comments %}
+      <li class='d-flex'>
+        <p class="mx-3 text-light fs-5">{{comment.user}} : </p> <p class="mx-3 text-light fs-5">{{comment.content}}</p> 
+        <p class="mx-3 fs-5 mb-3 text-warning">{{comment.get_rating_display}}</p> 
+        {% if comment.user == request.user %}
+        {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
+        <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">
+          {% csrf_token %}
+          <input type="submit" value = "삭제">
+        </form>
+        {% endif %}
+      </li>
+      {%empty%}
+      <p>이 영화에 대한 평가를 남겨보세요!</p>
+      {% endfor %}
+    </ul>
+    <hr>
+    {% if request.user.is_authenticated %}
+    
+    
+    <form action="{% url 'movies:comments_create' movie.pk%}" method="POST">
       {% csrf_token %}
-      <input type="submit" value = "삭제">
+      <table>
+      {{comment_form.as_table}}
+      </table>
+      <input type="submit">
     </form>
+    {% else %}
+    <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요!</a>
     {% endif %}
-  </li>
-  {%empty%}
-  <p>이 영화에 대한 평가를 남겨보세요!</p>
-  {% endfor %}
-</ul>
-<hr>
-{% if request.user.is_authenticated %}
+    </main>
+  </div>
+</div>
 
 
-<form action="{% url 'movies:comments_create' movie.pk%}" method="POST">
-  {% csrf_token %}
-  <table>
-  {{comment_form.as_table}}
-  </table>
-  <input type="submit">
-</form>
-{% else %}
-<a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요!</a>
-{% endif %}
 {% endblock content %}
 
 {% block script %}

@@ -2,49 +2,36 @@
 
 {% block content %}
 
-<h1 class="logo">이 달의 영화</h1>
+<h1 class="logo mt-5 text-light">Movie of the month</h1>
+<h3 class="d-flex justify-content-center mb-0">{{this_month}}월에 개봉한 영화를 소개해 드립니다.</h3>
 
-<div class="container">
-  <button type="button" id="moveLeft" class="btn-nav">
-    ᐊ
-  </button>
-  <div class="container-indicators">
-    <div class="indicator active" data-index=0></div>
-    <div class="indicator" data-index=1></div>
-    <div class="indicator" data-index=2></div>
-  </div>
-  <div class="slider" id="mySlider">
+<div class="d-flex container me-5">
+  <div class="slider pt-3" id="mySlider">
       {% for this_month_movie in this_month_movies %}
     <div class="movie" id="movie0">
-        <img
+      <a href="{% url 'movies:detail' this_month_movie.pk %}">  
+      <img
         src="https://image.tmdb.org/t/p/original/{{this_month_movie.poster_path}}"
         alt="" srcset="">
+      </a>
       <div class="description">
         <div class="description__buttons-container">
-          <div class="description__button"><i class="fas fa-play"></i></div>
           <div class="description__button"><i class="fas fa-plus"></i></div>
           <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
-          <div class="description__button"><i class="fas fa-thumbs-down"></i></div>
-          <div class="description__button"><i class="fas fa-chevron-down"></i></div>
         </div>
         <div class="description__text-container">
           <span class="description__match">97% Match</span>
-          <span class="description__rating">TV-14</span>
-          <span class="description__length">2h 11m</span>
-          <br><br>
-            {% for this_month_movie in this_month_movies %}
-          <span>{{this_month_movie.genre_ids}}</span>
-          <span>&middot;</span>
+          <br>
+          <span class="description__length"> ★ {{this_month_movie.vote_avg}}</span>
+          {% for genre in this_month_movie.genres.name %}
+          <span>{{genre}}</span>
           {% endfor %}
+          <span>&middot;</span>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
-  <button type="button" id="moveRight" class="btn-nav">
-    ᐅ
-  </button>
 </div>
-
 {% endblock content %} 
                 

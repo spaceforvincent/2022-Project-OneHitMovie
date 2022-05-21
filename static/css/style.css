@@ -9,7 +9,7 @@
   --arrow-width: 50px;
   --slider-py: 200px;
 }
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: auto) {
   :root {
     --movie-width: 25vw;
   }
@@ -25,7 +25,7 @@ body {
 }
 
 .logo {
-  color: red;
+  color: yellow;
   font-size: 4rem;
   text-align: center;
 }

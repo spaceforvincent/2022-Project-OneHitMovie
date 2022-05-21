@@ -1,7 +1,7 @@
 from django.shortcuts import get_list_or_404, render, redirect,get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash, get_user_model
-from .forms import CustomUserChangeForm, CustomUserCreationForm, UserSearchForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods, require_POST,require_safe
