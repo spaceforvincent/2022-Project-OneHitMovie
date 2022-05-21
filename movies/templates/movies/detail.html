@@ -1,51 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{{movie.title}}</h1>
+  <h1 class="text-light mt-3">{{movie.title}}</h1>
   <div class= 'd-flex justify-content-between text-light'>
   
   <div class="d-flex justify-content-end">
   <div class='d-flex mx-5'>
-    {% if request.user == article.user %}
-    <a href="{% url 'articles:update' article.pk %}">수정</a>
-    <form class = 'mx-3' action="{% url 'articles:delete' article.pk %}" method="POST">
-      {% csrf_token %}
-      <input type="submit" value="삭제">
-    </form>
-    {% endif %}
   </div>
   </div>
 </div>
   <hr>
-  <div class='text-light'>
-  <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" alt="">
-  <p>{{ movie.overview|linebreaks }}</p>
+  <div class='d-flex text-light'>
+  <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
+  <p class="mx-3">{{ movie.overview|linebreaks }}</p>
   <hr>
 </div>
 
-<div>
+<div class='d-flex justify-content-center my-5'>
   <form class="like-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
     {% csrf_token %}
     {% if user in movie.like_users.all %}
-    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart" style="color:red;"></i></button>
-    <span id="like-count-{{ movie.pk }}" class="text-light"> {{movie.like_users.all|length}} </span>
+    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
+    <span id="like-count-{{ movie.pk }}" class="text-light fs-5"> {{movie.like_users.all|length}} </span>
     {% else %}
-    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart" style="color:white;"></i></button>
-    <span id="like-count-{{ movie.pk }}" class="text-light">{{movie.like_users.all|length}}</span>
+    <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:white;"></i></button>
+    <span id="like-count-{{ movie.pk }}" class="text-light fs-5">{{movie.like_users.all|length}}</span>
     {% endif %}
   </form>
   </div>
 
-  <a href="{% url 'movies:index' %}">back</a>
   <hr>
-  <h4> 댓글목록 </h4>
+  <h4 class="text-light"> 댓글목록 </h4>
   {% if comments%}
-    <p><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
+    <p class="text-light"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
   {% endif %}
   <ul>
   {% for comment in comments %}
-  <li>
-    {{comment.user}} : {{comment.content}}
+  <li class='d-flex'>
+    <p class="mx-3 text-light fs-5">{{comment.user}} : </p> <p class="mx-3 text-light fs-5">{{comment.content}}</p> 
+    <p class="mx-3 fs-5 mb-3 text-warning">
+      {{comment.get_rating_display}}
+    </p> 
     {% if comment.user == request.user %}
     {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
     <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">
@@ -55,14 +50,18 @@
     {% endif %}
   </li>
   {%empty%}
-  <p>댓글을 남겨보세요!</p>
+  <p>이 영화에 대한 평가를 남겨보세요!</p>
   {% endfor %}
 </ul>
 <hr>
 {% if request.user.is_authenticated %}
+
+
 <form action="{% url 'movies:comments_create' movie.pk%}" method="POST">
   {% csrf_token %}
-  {{comment_form}}
+  <table>
+  {{comment_form.as_table}}
+  </table>
   <input type="submit">
 </form>
 {% else %}

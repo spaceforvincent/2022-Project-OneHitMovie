@@ -7,23 +7,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods, require_POST,require_safe
 from django.views.generic import FormView
 from django.db.models import Q 
-from movies.models import Movie
+from movies.models import Movie, MovieComment
 
 
 # Create your views here.
-
-def user_search(request):
-    if request.method == 'POST':
-        searchedUser = request.POST['searched']
-        User = get_user_model()        
-        user_list = User.objects.filter(Q(username__icontains=searchedUser))
-        context = {
-            'searched_user': searchedUser, 
-            'user_list': user_list
-        }
-        return render(request, 'accounts/user_search.html', context)
-    else:
-        return render(request, 'accounts/user_search.html', {})
 
 @require_http_methods(['GET','POST'])
 def login(request) :
@@ -55,7 +42,7 @@ def signup(request):
         return redirect('movies:index')
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
-        form.picture = request.FILES.get['picture']
+        form.picture = request.FILES.get('picture')
         if form.is_valid():
             #회원 가입 후 자동으로 로그인 진행하기
             user = form.save(commit=False)
@@ -120,10 +107,10 @@ def change_password(request):
 
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
-    movies_count = Movie.objects.filter(user_id=person.id).count()
+    my_movies = person.like_movies.all()
     context = {
         'person' : person,
-        'movies_count' : movies_count,
+        'my_movies' : my_movies,
     }
     return render(request, 'accounts/profile.html', context)
 

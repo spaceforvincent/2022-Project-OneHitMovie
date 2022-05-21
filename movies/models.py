@@ -23,9 +23,17 @@ class Movie(models.Model) :
         return self.title
 
 class MovieComment(models.Model):
+    STAR_CHOICES = [
+        ('5',"★★★★★"),
+        ('4',"★★★★"),
+        ('3',"★★★"),
+        ('2',"★★"),
+        ('1',"★"),
+        (None, '선택')
+    ]
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='movie_comments')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_comments')
-    rating = models.FloatField()
+    rating = models.CharField(max_length=10, choices=STAR_CHOICES)
     content = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

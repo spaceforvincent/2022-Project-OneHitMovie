@@ -12,7 +12,7 @@ class Advertisement(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_advertisements')
 
-class Comment(models.Model):
+class AdvertisementComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='advertisement_comments')
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='advertisement_comments')
     content = models.CharField(max_length=200)

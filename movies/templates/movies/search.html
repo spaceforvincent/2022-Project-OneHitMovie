@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "d-flex my-3 justify-content-center">
+<h2 class = 'text-light'>회원 검색</h2>
+<br>
+</div>
+
+
+{% if user_list %}     
+{% for user in user_list %}
+<br>
+<div class="d-flex mx-5">    
+<a class = "text-decoration-none text-light justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
+            <img src=
+                {% if user.picture %}
+                    "{{ user.picture.url }}"
+                {% else %}
+                    "https://i.stack.imgur.com/34AD2.jpg"
+                {% endif %}
+                width="150rem" height="150rem" style="border-radius: 50%;" alt="">
+                <p class="my-3">{{user}}님의 프로필</p>
+        </a>
+        <p class="text-light mx-5">{{user.bio}}<p>
+    </div>
+        {% endfor %}
+{% elif searched %}
+    <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
+
+    {% endif %}
+
+<div class = "d-flex my-3 justify-content-center">
+    <h2 class = 'text-light'>영화 검색</h2>
+        <br>
+    </div>
+{% if movie_list%}
+<br>
+<div class="d-flex container">
+    <div class="row">
+    {% for movie in movie_list %}
+    <div class="col-2 mx-3">    
+<a class = "text-decoration-none text-light justify-content-center" href=" {% url 'movies:detail' movie.pk %} ">
+            <img src=
+                {% if movie.poster_path %}
+                    "https://image.tmdb.org/t/p/original/{{movie.poster_path}}"
+                {% else %}
+                    "https://i.stack.imgur.com/34AD2.jpg"
+                {% endif %}
+                width="150rem" height="150rem" alt="">
+                <p class="my-3">{{movie.title}}</p>
+        </a>
+    </div>
+        {% endfor %}
+    </div>
+    </div> 
+{% elif searched %}
+    <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched }})는 찾을 수 없습니다...</i></b>
+
+    {% endif %}
+
+
+
+{% endblock %}

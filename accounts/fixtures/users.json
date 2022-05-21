@@ -1,0 +1,48 @@
+[
+{
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$L3ibhOPHIw2oWMYORw9h2e$d22uPiNmZQdp5dfJnCnglo9etw9Fm+v2HzRuovskeoQ=",
+        "last_login": "2022-05-21T03:37:26.988Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2022-05-20T04:04:47.500Z",
+        "bio": "",
+        "picture": "",
+        "birthday": null,
+        "blog_url": "",
+        "groups": [],
+        "user_permissions": [],
+        "followings": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$bhpZDth5XOYC12KsPGHMo7$hMLOeU9a1AXM506n3hTZXZcGo6++MezcwO+k2ioTWMg=",
+        "last_login": "2022-05-20T16:00:44.103Z",
+        "is_superuser": false,
+        "username": "빈쎈트",
+        "first_name": "",
+        "last_name": "",
+        "email": "jmr2882@naver.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2022-05-20T16:00:43.832Z",
+        "bio": "안녕하세요. 영화를 사랑하는 빈쎈트입니다.",
+        "picture": "images/KakaoTalk_20210801_200959761-crop.jpg",
+        "birthday": "1995-04-04",
+        "blog_url": "https://www.instagram.com/feelossafy/",
+        "groups": [],
+        "user_permissions": [],
+        "followings": []
+    }
+}
+]

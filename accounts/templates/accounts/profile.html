@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class = 'd-flex justify-content-center'>
+    <div class="col-4">
+        <img class = "mt-5" src={% if person.picture %}"{{ person.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+            width="150rem" height="150rem" style="border-radius: 50%;" alt="">
+    </div>
+    {% with followers=person.followers.all followings=person.followings.all%}
+    <div class = 'text-light mt-5'>
+        <h2 class="text-light">{{person.username}}</h2>
+    마이무비 : {{ my_movies | length }} / 팔로워 : <span id = 'followers'>{{ followers|length }}</span> / 팔로잉 : <span id = 'followings'>{{ followings|length }}</span>  
+    <div>
+        {% if user != person %}
+        <form class = 'follow-form' data-person-id="{{ person.pk }}" action="{% url 'accounts:follow' person.pk%}" method = "POST">
+        {% csrf_token %}
+        {% if user in followers %}
+            <input id = "submit_input" type="submit" value = "언팔로우">
+        {% else %}
+            <input id = "submit_input" type="submit" value = "팔로우">
+        {% endif %}
+    </form>
+    {% endif %}
+    </div>    
+</div>
+{% endwith %}
+</div>
+<br>
+<br>
+{% comment %} 마이무비 목록 {% endcomment %}
+
+<div class = 'd-flex my-5 justify-content-evenly'>
+    <h2 class="text-light">{{person.username}}님의 마이무비</h2>
+</div>
+<div class = 'd-flex container'>
+    <div class = "row">
+        {% for my_movie in my_movies %}
+    <div class = 'col-2 mx-5'>
+    <a class='text-decoration-none text-light' href="{% url 'movies:detail' my_movie.pk %}">
+        <img src="https://image.tmdb.org/t/p/original/{{my_movie.poster_path}}" style = "width: 200px; height: 200px;" alt="">
+        <small>{{my_movie.title}}</small> {% if person.pk in my_movie.movie_comments.user_id %}{% endif %}   
+    </a>
+    
+</div>
+{% endfor %}
+</div>
+</div>
+<br>
+<br>
+<a class = "text-light" href="{% url 'movies:index' %}">BACK</a>
+
+{% endblock content %}
+
+{% block script %}
+{% if user != person %}
+<script>
+  // 1. form 태그 class 선택자를 활용해서 선택 
+  const followForm = document.querySelector('.follow-form')
+  followForm.addEventListener('submit', event => {
+  event.preventDefault() //원래 submit이 하는 기능 취소
+  const personId = event.target.dataset.personId
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      axios({
+        method: 'POST',
+        url: `/accounts/${personId}/follow/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then(response => {
+          const followed = response.data.followed
+          const followings_count = response.data.followings_count
+          const followers_count = response.data.followers_count
+          const followButton = document.querySelector('#submit_input')
+          const followings = document.querySelector('#followings')
+          const followers = document.querySelector('#followers')
+          if (followed === true) {
+            followButton.setAttribute("value","언팔로우")
+            followButton.style.color = "black"
+          }
+          else{
+            followButton.setAttribute("value","팔로우")
+            followButton.style.color = "blue"
+          }
+          followings.innerText = followings_count 
+          followers.innerText = followers_count 
+       })
+  })
+</script>
+{% endif %}
+{% endblock script %}
+
+

@@ -1,28 +1,43 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from .models import Movie, MovieComment
 from .forms import MovieCommentForm
+from django.db.models import Q
 import datetime
 from django.db.models import Avg
 
 @require_safe
 def index(request):
-    vote_count_avg = Movie.objects.aggregate(Avg('vote_count'))
-    this_month_movies = Movie.objects.filter(vote_count__gte = vote_count_avg['vote_count__avg'], released_date__month=datetime.datetime.now().strftime ("%m"))
+    this_month_movies = Movie.objects.filter(vote_avg__gte = 8.0, released_date__month=datetime.datetime.now().strftime ("%m"))[:20]
     context = {
         'this_month_movies' : this_month_movies,
         'this_month' : datetime.datetime.now().strftime ("%m") 
     }
     return render(request, 'movies/index.html', context)
 
+def search(request):
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        User = get_user_model()        
+        user_list = User.objects.filter(Q(username__icontains=searched))
+        movie_list = Movie.objects.filter(Q(title__icontains=searched))
+        context = {
+            'searched': searched, 
+            'user_list': user_list,
+            'movie_list': movie_list,
+        }
+        return render(request, 'movies/search.html', context)
+    else:
+        return render(request, 'movies/search.html', {})
+
 @require_safe
 def detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     comment_form = MovieCommentForm()
     comments = movie.movie_comments.all()
-
     context = {
         'movie': movie,
         'comment_form' : comment_form,
@@ -45,12 +60,12 @@ def comments_create(request, pk):
     return redirect('accounts:login')
 
 @require_POST
-def comments_delete(request, article_pk, comment_pk):
+def comments_delete(request, movie_pk, comment_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(MovieComment, pk=comment_pk)
         if request.user == comment.user:
             comment.delete()
-    return redirect('movies:detail', article_pk)
+    return redirect('movies:detail', movie_pk)
 
 
 @require_POST

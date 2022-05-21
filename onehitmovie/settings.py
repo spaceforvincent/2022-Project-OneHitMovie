@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'corsheaders',
     'rest_framework',
+    "dynamic_forms",
     # token base authentication
     'rest_framework.authtoken',
     # DRF auth 담당     
