@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<h1 class = "d-flex my-5 text-light">회원정보수정</h1>
+<h1 class = "d-flex my-5 text-light justify-content-center">회원정보수정</h1>
 <form class = "text-light" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    <div class = "justify-content-center">{{form.as_p}}</div>
     <input type="submit">
 </form>
 <a class = "text-light" href="{% url 'movies:index' %}">BACK</a>

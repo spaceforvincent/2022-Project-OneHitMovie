@@ -108,9 +108,11 @@ def change_password(request):
 def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
     my_movies = person.like_movies.all()
+    advertisements = person.advertisements.all()
     context = {
         'person' : person,
         'my_movies' : my_movies,
+        'advertisements' : advertisements
     }
     return render(request, 'accounts/profile.html', context)
 

@@ -7,11 +7,14 @@ from .models import Movie, MovieComment
 from .forms import MovieCommentForm
 from django.db.models import Q
 import datetime
-from django.db.models import Avg
+from django.core.paginator import Paginator
+
 
 @require_safe
 def index(request):
     this_month_movies = Movie.objects.filter(vote_avg__gte = 8.0, released_date__month=datetime.datetime.now().strftime ("%m"))[:20]
+    if datetime.datetime.now().strftime ("%a") == 'Sun':
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     if datetime.datetime.now().strftime ("%m")[0] == '0':
         this_month = datetime.datetime.now().strftime ("%m")[1]
     else:
@@ -19,7 +22,9 @@ def index(request):
     
     context = {
         'this_month_movies' : this_month_movies,
-        'this_month' : this_month 
+        'this_month' : this_month,
+        'today_movies' : today_movies,
+        'today' : datetime.datetime.now().strftime("%a")
     }
     return render(request, 'movies/index.html', context)
 
@@ -27,12 +32,21 @@ def search(request):
     if request.method == 'POST':
         searched = request.POST['searched']
         User = get_user_model()        
+        
         user_list = User.objects.filter(Q(username__icontains=searched))
         movie_list = Movie.objects.filter(Q(title__icontains=searched))
+        
+        user_paginator=Paginator(user_list,10)
+        movie_paginator=Paginator(movie_list,10)
+
+        page_number = request.GET.get('page')
+        user_page_obj = user_paginator.get_page(page_number)
+        movie_page_obj = movie_paginator.get_page(page_number)
+
         context = {
             'searched': searched, 
-            'user_list': user_list,
-            'movie_list': movie_list,
+            'users': user_page_obj,
+            'movies': movie_page_obj,
         }
         return render(request, 'movies/search.html', context)
     else:
@@ -43,10 +57,12 @@ def detail(request, pk):
     movie = get_object_or_404(Movie, pk=pk)
     comment_form = MovieCommentForm()
     comments = movie.movie_comments.all()
+    advertisements = movie.advertisements.all()
     context = {
         'movie': movie,
         'comment_form' : comment_form,
         'comments' : comments,
+        'advertisements' : advertisements,
     }
     return render(request, 'movies/detail.html', context)
 

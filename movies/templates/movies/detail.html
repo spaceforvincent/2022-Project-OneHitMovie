@@ -23,22 +23,20 @@
   font-size: 90%;
 }
 </style>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 
 <div class="container-fluid ">
   <div class="row flex-nowrap">
-    <div class="col-3 bd-sidebar">
-      <h5 class='d-flex justify-content-center'>연관상품추천</h5>
-      <ul class="nav">
-        <li><a>Side 1</a></li>
-        <li><a>Side 2</a></li>
-        <li><a>Side 3</a></li>
-        <li><a>Side 4</a></li>
-        <li><a>Side 5</a></li>
-        <li><a>Side 6</a></li>
-        <li><a>Side 7</a></li>
-        <li><a>Side 8</a></li>
+    <div class="col-3 bd-sidebar ">
+      <h5 class='d-flex justify-content-center my-3'>연관상품추천</h5>
+      {% if request.user.isgeneral == '0' %}
+      <a class='d-flex justify-content-center btn btn-dark' href= "{% url 'community:create' movie.pk%}" role="button">홍보하기</a>
+      {% endif %}
+      <ul class="d-flex nav justify-content-center mt-3">
+          {% for advertisement in advertisements %}
+        <li><a href="{% url 'community:detail' advertisement.pk%}"><img src="{{advertisement.picture.url}}" style="width:150px; height:150px;"></a></li>
+        {% empty %}
+        <p class="d-flex justify-content-center my-5">연관된 상품이 없습니다.</p>
+        {% endfor %}
       </ul>
       <br>
     </div>
@@ -72,8 +70,8 @@
       <ul>
       {% for comment in comments %}
       <li class='d-flex'>
-        <p class="mx-3 text-light fs-5">{{comment.user}} : </p> <p class="mx-3 text-light fs-5">{{comment.content}}</p> 
-        <p class="mx-3 fs-5 mb-3 text-warning">{{comment.get_rating_display}}</p> 
+        {{ comment.user.picture.url }} <p class="mx-3 text-light fs-6">{{comment.user}} : </p> <p class="mx-3 text-light fs-6">{{comment.content}}</p> 
+        <p class="mx-3 fs-6 mb-3 text-warning">{{comment.get_rating_display}}</p> 
         {% if comment.user == request.user %}
         {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
         <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">

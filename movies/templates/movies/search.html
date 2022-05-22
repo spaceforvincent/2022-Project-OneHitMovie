@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
 {% block content %}
 <div class = "d-flex my-3 justify-content-center">
 <h2 class = 'text-light'>회원 검색</h2>
@@ -6,8 +8,8 @@
 </div>
 
 
-{% if user_list %}     
-{% for user in user_list %}
+{% if users %}     
+{% for user in users %}
 <br>
 <div class="d-flex mx-5">    
 <a class = "text-decoration-none text-light justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
@@ -23,6 +25,9 @@
         <p class="text-light mx-5">{{user.bio}}<p>
     </div>
         {% endfor %}
+        <div class='d-flex justify-content-center'>
+            {% bootstrap_pagination users%}
+        </div>
 {% elif searched %}
     <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
 
@@ -32,13 +37,13 @@
     <h2 class = 'text-light'>영화 검색</h2>
         <br>
     </div>
-{% if movie_list%}
+{% if movies%}
 <br>
-<div class="d-flex container">
+<div class=" container">
     <div class="row">
-    {% for movie in movie_list %}
-    <div class="col-2 mx-3">    
-<a class = "text-decoration-none text-light justify-content-center" href=" {% url 'movies:detail' movie.pk %} ">
+        {% for movie in movies %}
+        <div class=" col-2 mx-3">    
+<a class = " text-decoration-none text-light " href=" {% url 'movies:detail' movie.pk %} ">
             <img src=
                 {% if movie.poster_path %}
                     "https://image.tmdb.org/t/p/original/{{movie.poster_path}}"
@@ -46,15 +51,17 @@
                     "https://i.stack.imgur.com/34AD2.jpg"
                 {% endif %}
                 width="150rem" height="150rem" alt="">
-                <p class="my-3">{{movie.title}}</p>
-        </a>
-    </div>
+            </a>
+            <div class='my-2'>{{movie.title}}</div>
+        </div>
         {% endfor %}
     </div>
     </div> 
+    <div class='d-flex justify-content-center'>
+        {% bootstrap_pagination movies%}
+    </div>
 {% elif searched %}
     <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched }})는 찾을 수 없습니다...</i></b>
-
     {% endif %}
 
 

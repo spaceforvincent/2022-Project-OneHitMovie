@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="text-light">로그인</h1>
+  <h1 class="d-flex justify-content-center text-light">로그인</h1>
   <hr>
-  <form class="text-light" action="" method="POST">
+  <form class="d-flex justify-content-center text-light" action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="로그인">
+    <div>{{ form.as_p }}</div>
+    <input class="mx-3" style = "height:80px;" type="submit" value="로그인">
   </form>
-  <a class="text-light" href="{% url 'movies:index' %}">back</a>
 {% endblock content %}

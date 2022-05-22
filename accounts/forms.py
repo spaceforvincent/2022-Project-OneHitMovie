@@ -17,6 +17,7 @@ class CustomUserChangeForm(UserChangeForm):
 	        'placeholder': '당신을 소개해주세요.',
 	        'rows' : 5,
 	        'cols' : 30,
+			'style' : 'width:400px; height:200px;'
 	        }
 	    ),
     )
@@ -26,8 +27,9 @@ class CustomUserChangeForm(UserChangeForm):
 	widget=forms.NumberInput(
 		attrs={
 		'type':'date',
-        'class': 'my-birthday form-control',
+        'class': 'my-birthday form-horizontal',
 		'placeholder': '생년월일을 입력해주세요',
+		'style' : 'width:200px;'
 		}
 	),
 	)
@@ -38,6 +40,7 @@ class CustomUserChangeForm(UserChangeForm):
 		attrs={
 		'class': 'my-blog_url form-control input-sm',
 		'placeholder': '대표 SNS 주소를 알려주세요',
+		'style' : 'width:400px;'
 		}
 	),
 	required=False

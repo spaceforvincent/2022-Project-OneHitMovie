@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<h1 class="logo mt-5 text-light">Movie of the month</h1>
+<h1 class="logo mt-5 text-light">이 달의 영화</h1>
 <h3 class="d-flex justify-content-center mb-0">{{this_month}}월에 개봉한 영화를 소개해 드립니다.</h3>
 
-<div class="d-flex container me-5">
-  <div class="slider pt-3" id="mySlider">
+<div class="d-flex container">
+  <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
       {% for this_month_movie in this_month_movies %}
     <div class="movie" id="movie0">
       <a href="{% url 'movies:detail' this_month_movie.pk %}">  
@@ -15,23 +15,53 @@
         alt="" srcset="">
       </a>
       <div class="description">
-        <div class="description__buttons-container">
+        <p class="mx-2 mb-1">{{this_month_movie.title}} <small class="description__length"> ★ {{this_month_movie.vote_avg}}</small></p>
+        <div class="py-0 description__buttons-container">
           <div class="description__button"><i class="fas fa-plus"></i></div>
           <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
         </div>
         <div class="description__text-container">
-          <span class="description__match">97% Match</span>
-          <br>
-          <span class="description__length"> ★ {{this_month_movie.vote_avg}}</span>
-          {% for genre in this_month_movie.genres.name %}
+          {% for genre in this_month_movie.genres.all %}
           <span>{{genre}}</span>
-          {% endfor %}
           <span>&middot;</span>
+          {% endfor %}
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
 </div>
+
+<h1 class="logo text-light">오늘의 영화</h1>
+{% if today == 'Sun' %}
+<h3 class="d-flex justify-content-center mb-0">일요일이네요... 일주일의 끝을 불태워봅시다!</h3>
+{% endif %}
+<div class="d-flex container">
+  <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
+      {% for today_movie in today_movies %}
+    <div class="movie" id="movie0">
+      <a href="{% url 'movies:detail' today_movie.pk %}">  
+      <img
+        src="https://image.tmdb.org/t/p/original/{{today_movie.poster_path}}"
+        alt="" srcset="">
+      </a>
+      <div class="description">
+        <p class="mx-2">{{today_movie.title}}<small class="description__length"> ★ {{today_movie.vote_avg}}</small></p>
+        <div class="py-0 description__buttons-container">
+          <div class="description__button"><i class="fas fa-plus"></i></div>
+          <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
+        </div>
+        <div class="description__text-container">
+          {% for genre in today_movie.genres.all %}
+          <span>{{genre}}</span>
+          <span>&middot;</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
 {% endblock content %} 
                 

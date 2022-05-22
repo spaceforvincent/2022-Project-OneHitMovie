@@ -16,7 +16,7 @@ class Movie(models.Model) :
     vote_avg = models.FloatField(null=True, blank=True)
     overview = models.TextField(null=True, blank=True)
     poster_path = models.CharField(max_length=500, null=True, blank=True)
-    genres = models.ManyToManyField(Genre)
+    genres = models.ManyToManyField(Genre, related_name= 'movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
 
     def __str__(self):

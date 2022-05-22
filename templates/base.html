@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="{%static 'css/style.css'%}">
   <script src="https://kit.fontawesome.com/a0043d9bc2.js" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/4c186c9723.js" crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+
   
   <title>일타무비</title>
   
@@ -21,20 +24,23 @@
   
   <nav class="navbar navbar-expand-lg bg-success">
     <div class="d-flex container-fluid">
-      <a class="navbar-brand mx-5 " href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
+      <a class="navbar-brand mx-5 mt-3" href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
       <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <small>메뉴</small>
       </button>
       <div class="collapse navbar-collapse mx-5 " id="navbarSupportedContent">
         
-        <form class="d-flex mx-5 " method="POST" action="{% url 'movies:search' %}">
+        <form class="d-flex mx-3 " method="POST" action="{% url 'movies:search' %}">
           {% csrf_token %}        
           <input class="form-control me-2 " style="width:280px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
           <button class="btn btn-outline-warning" style="width: 80px;" type="submit"> Search </button>
       </form>
-        <ul class="navbar-nav ms-3 justify-content-end">
+        <ul class="navbar-nav ms-2 justify-content-end">
           <li class="nav-item">
             <a class="nav-link active text-warning " href="{% url 'accounts:profile' user.username %}"><b>마이페이지</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active text-warning " href="{% url 'community:index'%}"><b>씨네마켓</b></a>
           </li>
           <li class="nav-item">
             <a class="nav-link active text-warning" href="{% url 'movies:index' %}">
@@ -49,7 +55,7 @@
       </div>
     </div>
   </nav>
-  <hr>
+  <hr class='mb-0'>
   
   
   {% comment %} 비로그인 상태의 출력 {% endcomment %}
@@ -57,15 +63,15 @@
     
     <nav class="navbar navbar-expand-lg bg-success">
       <div class="d-flex container-fluid">
-        <a class="navbar-brand mx-5 " href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
-        <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand ms-5 mt-3" href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
+        <button class="navbar-toggler bg-light border-light me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <small>메뉴</small>
         </button>
-        <div class="collapse navbar-collapse mx-5 justify-content-end" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse me-5 justify-content-end" id="navbarSupportedContent">
           
-          <form class="d-flex mx-5 " method="POST" action="{% url 'movies:search' %}">
+          <form class="d-flex me-3 " method="POST" action="{% url 'movies:search' %}">
             {% csrf_token %}        
-            <input class="form-control me-2 " style="width:253px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
+            <input class="form-control me-2 " style="width:300px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
             <button class="btn btn-outline-warning" style="width: 70px;" type="submit"> Search </button>
         </form>
           <ul class="navbar-nav mx-5 justify-content-end">

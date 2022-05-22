@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="d-flex justify-content-center my-5">씨네마켓</h1>
+  {% if request.user.is_authenticated == False %}
+    <a href="{% url 'accounts:login' %}">[새 글을 작성하려면 로그인하세요.]</a>
+  {% endif %}
+  <hr>
+  {% for advertisement in advertisements %}
+  <h3 class="d-flex justify-content-center">{{ advertisement.title }}</h3>
+    <p class="mx-5">작성자 : 
+      <a href="{% url 'accounts:profile' advertisement.user.username %}">{{ advertisement.user }}</a>
+    </p>
+    <p class="mx-5">영화 : <a href="{% url 'movies:detail' advertisement.movie.pk%}">{{advertisement.movie}} </p></a>
+    <div class="d-flex justify-content-center"><img src= "{{advertisement.picture.url}}" style="width:500px; height:500px;"></div>
+    <div class="mx-5"><p>{{ advertisement.content |linebreaks}}</p></div>
+
+    <div>
+      
+  {% if request.user.is_authenticated %}
+  <div class="d-flex justify-content-center">    
+  <form class="like-form" data-advertisement-id="{{ advertisement.pk }}">
+        {% csrf_token %}
+        {% if user in advertisement.like_users.all %}
+          {% comment %} <button id="like-{{ article.pk }}">좋아요 취소</button> {% endcomment %}
+          <button class="btn btn-link">
+            <i id="like-{{ advertisement.pk }}" class="fas fa-heart fa-2xl" style="color:crimson;"></i> 
+          </button>
+        {% else %}
+          {% comment %} <button id="like-{{ article.pk }}">좋아요</button> {% endcomment %}
+          <button class="btn btn-link">
+            <i id="like-{{ advertisement.pk }}" class="fas fa-heart fa-2xl" style="color:black;"></i> 
+          </button>
+        {% endif %}
+      </form>
+      {% endif %}
+      <p>
+        <span class="fs-4 " id="like-count-{{ advertisement.pk }}">
+          {{ advertisement.like_users.all|length }}
+        </span>
+      </p>
+    </div>
+    <a href="{% url 'community:detail' advertisement.pk %}">[DETAIL]</a>
+    <hr>
+  {% endfor %}
+{% endblock content %}
+
+{% block script %}
+  <script>
+    // 1. form 태그 class 선택자를 활용해서 선택
+    const forms = document.querySelectorAll('.like-form')
+    forms.forEach(form => {
+      // console.log(form)
+      form.addEventListener('submit', event => {
+        event.preventDefault()
+        //console.log(event)
+        const advertisementId = event.target.dataset.advertisementId
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        //console.log(csrftoken)
+        //axios.post(`http://127.0.0.1:8000/articles/${articleId}/likes/`, {},{'X-CSRFToken': csrftoken} )
+        axios({
+          method: 'post',
+          url: `/community/${advertisementId}/likes/`,
+          headers: {'X-CSRFToken': csrftoken},
+        })
+          .then(response => {
+            console.log(response)
+            // 구조분해할당
+            // const { count, liked } = response.data
+            const count = response.data.count
+            const liked = response.data.liked
+            // console.log(count, liked)
+
+            const likeButton = document.querySelector(`#like-${advertisementId}`)
+            const likeCount = document.querySelector(`#like-count-${advertisementId}`)
+            if(liked){
+              // likeButton.innerText = '좋아요 취소'
+              likeButton.style.color = 'crimson'
+            }
+            else {
+              //likeButton.innerText = '좋아요'
+              likeButton.style.color = 'black'
+            }
+            // lkieButton.innerText = liked ? 좋아요 취소 : '좋아요'
+            
+
+            likeCount.innerText = count
+          })
+      })
+    })
+  </script>
+{% endblock script %}
