@@ -2,66 +2,147 @@
 
 {% block content %}
 
-<h1 class="logo mt-5 text-light">이 달의 영화</h1>
-<h3 class="d-flex justify-content-center mb-0">{{this_month}}월에 개봉한 영화를 소개해 드립니다.</h3>
-
-<div class="d-flex container">
-  <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
-      {% for this_month_movie in this_month_movies %}
-    <div class="movie" id="movie0">
-      <a href="{% url 'movies:detail' this_month_movie.pk %}">  
-      <img
-        src="https://image.tmdb.org/t/p/original/{{this_month_movie.poster_path}}"
-        alt="" srcset="">
-      </a>
-      <div class="description">
-        <p class="mx-2 mb-1">{{this_month_movie.title}} <small class="description__length"> ★ {{this_month_movie.vote_avg}}</small></p>
-        <div class="py-0 description__buttons-container">
-          <div class="description__button"><i class="fas fa-plus"></i></div>
-          <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
-        </div>
-        <div class="description__text-container">
-          {% for genre in this_month_movie.genres.all %}
-          <span>{{genre}}</span>
-          <span>&middot;</span>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+<div class='d-flex justify-content-center mt-5'><small>원하시는 보기 방식을 선택해주세요.</small></div>
+<div class='d-flex container justify-content-center my-3'>
+  <button id = 'blue' type="button" class="btn btn-primary mx-2">지금의 영화</button>
+<button id = 'yellow' type="button" class="btn btn-warning mx-2">오늘의 영화</button>
+<button id = 'red' type="button" class="btn btn-danger mx-2">이 달의 영화</button>
+<button id = 'white' type="button" class="btn btn-light mx-2">Light</button>
+<button id = 'black' type="button" class="btn btn-dark mx-2">Dark</button>
 </div>
 
-<h1 class="logo text-light">오늘의 영화</h1>
-{% if today == 'Sun' %}
-<h3 class="d-flex justify-content-center mb-0">일요일이네요... 일주일의 끝을 불태워봅시다!</h3>
-{% endif %}
-<div class="d-flex container">
-  <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
-      {% for today_movie in today_movies %}
-    <div class="movie" id="movie0">
-      <a href="{% url 'movies:detail' today_movie.pk %}">  
-      <img
-        src="https://image.tmdb.org/t/p/original/{{today_movie.poster_path}}"
-        alt="" srcset="">
-      </a>
-      <div class="description">
-        <p class="mx-2">{{today_movie.title}}<small class="description__length"> ★ {{today_movie.vote_avg}}</small></p>
-        <div class="py-0 description__buttons-container">
-          <div class="description__button"><i class="fas fa-plus"></i></div>
-          <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
+<div id="content">
+  <div id='now_movie' style='display:block;'>
+    <h1 class="logo mt-5 text-dark"><b>지금의 영화</b></h1>
+    <h3 class="d-flex justify-content-center mb-0">{{now_message}}</h3>
+    
+    <div class="d-flex container">
+      <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
+          {% for now_movie in now_movies %}
+        <div class="movie" id="movie0">
+          <a href="{% url 'movies:detail' now_movie.pk %}">  
+          <img
+            src="https://image.tmdb.org/t/p/original/{{now_movie.poster_path}}"
+            alt="" srcset="">
+          </a>
+          <div class="description">
+            <p class="mx-2 mb-1">{{now_movie.title|truncatechars:16}}</p>
+            <small class="description__length mx-2"> ★ {{now_movie.vote_avg}}</small>
+            <div class="py-0 description__buttons-container">
+              <div class="description__button"><i class="fas fa-plus"></i></div>
+              <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
+            </div>
+            <div class="description__text-container">
+            </div>
+          </div>
         </div>
-        <div class="description__text-container">
-          {% for genre in today_movie.genres.all %}
-          <span>{{genre}}</span>
-          <span>&middot;</span>
-          {% endfor %}
-        </div>
+        {% endfor %}
       </div>
     </div>
-    {% endfor %}
-  </div>
+    </div>
+  
+  
 </div>
+
+<div id='this_month_movie' style='display:none;'>
+  <h1 class="logo mt-5 text-dark"><b>이 달의 영화</b></h1>
+  <h3 class="d-flex justify-content-center mb-0">{{this_month}}월에 개봉한 영화를 소개해 드립니다.</h3>
+  
+  <div class="d-flex container">
+    <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
+        {% for this_month_movie in this_month_movies %}
+      <div class="movie" id="movie0">
+        <a href="{% url 'movies:detail' this_month_movie.pk %}">  
+        <img
+          src="https://image.tmdb.org/t/p/original/{{this_month_movie.poster_path}}"
+          alt="" srcset="">
+        </a>
+        <div class="description">
+          <p class="mx-2 mb-1">{{this_month_movie.title|truncatechars:16}}</p>
+          <small class="description__length"> ★ {{this_month_movie.vote_avg}}</small>
+          <div class="py-0 description__buttons-container">
+            <div class="description__button"><i class="fas fa-plus"></i></div>
+            <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
+          </div>
+          <div class="description__text-container">
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+
+  <div id='today_movie' style='display:none;'>
+    <h1 class="logo text-black mt-5"><b>오늘의 영화</b></h1>
+    <h3 class="d-flex justify-content-center mb-0">{{today_message}}</h3>
+    <div class="d-flex container">
+      <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
+          {% for today_movie in today_movies %}
+        <div class="movie" id="movie0">
+          <a href="{% url 'movies:detail' today_movie.pk %}">  
+          <img
+            src="https://image.tmdb.org/t/p/original/{{today_movie.poster_path}}"
+            alt="" srcset="">
+          </a>
+          <div class="description">
+            <small class="mx-2">{{today_movie.title|truncatechars:16}}</small>
+            <small class="description__length"> ★ {{today_movie.vote_avg}}</small>
+            <div class="py-0 description__buttons-container">
+              <div class="description__button"><i class="fas fa-plus"></i></div>
+              <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
+            </div>
+            <div class="description__text-container fs-6">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    </div>
+
+  
+
 
 {% endblock content %} 
+{% block script %}
+
+<script>
+
+  
+  const content = document.querySelector('#content');
+  const child = content.firstChild
+  const red = document.querySelector('#red')
+  const yellow = document.querySelector('#yellow')
+  const blue = document.querySelector('#blue')
+  
+  const this_month_movie = document.querySelector('#this_month_movie')  
+  const today_movie = document.querySelector('#today_movie')
+  const now_movie = document.querySelector('#now_movie')
+  
+  red.addEventListener('click', event => {
+    while ( content.hasChildNodes() )
+     { content.removeChild( content.firstChild ); }
+
+    this_month_movie.style.display='block'
+    content.append(this_month_movie)
+  })
+  
+  
+  yellow.addEventListener('click', event => {
+    while ( content.hasChildNodes() )
+    { content.removeChild( content.firstChild ); }
+    today_movie.style.display='block'
+    content.append(today_movie)
+  })
+
+
+  blue.addEventListener('click', event => {
+    while ( content.hasChildNodes() )
+    { content.removeChild( content.firstChild ); }
+    now_movie.style.display='block'
+    content.append(now_movie)
+  })      
+</script>
+{% endblock script %}
                 

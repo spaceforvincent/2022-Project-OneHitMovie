@@ -18,13 +18,13 @@
   <title>일타무비</title>
   
 </head>
-<body class="bg-success">
+<body class="bg-primary bg-opacity-25">
   {% comment %} 로그인 상태의 출력 {% endcomment %}
   {% if request.user.is_authenticated%}
   
-  <nav class="navbar navbar-expand-lg bg-success">
+  <nav class="navbar navbar-expand-lg bg-primary bg-opacity-25">
     <div class="d-flex container-fluid">
-      <a class="navbar-brand mx-5 mt-3" href="{% url 'movies:index' %}"><img src="{% static "<h1 class="text-warning">일타무비</h1></a>
+      <a class="navbar-brand mx-5 mt-3" href="{% url 'movies:index' %}"><img src="{% static '일타무비.png' %}" style="width:120px; height:70px;"></a>
       <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <small>메뉴</small>
       </button>
@@ -32,11 +32,11 @@
         
         <form class="d-flex mx-3 " method="POST" action="{% url 'movies:search' %}">
           {% csrf_token %}        
-          <input class="form-control me-2 " style="width:280px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
-          <button class="btn btn-outline-warning" style="width: 80px;" type="submit"> Search </button>
+          <input class="form-control me-2 " style="width:500px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
+          <button class="btn btn-outline-warning" style="width: 80px;" type="submit"> 검색 </button>
       </form>
-        <ul class="navbar-nav ms-2 justify-content-end">
-          <li class="nav-item">
+        <ul class="navbar-nav ms-2">
+          <li class="nav-item" style="margin-left:200px;">
             <a class="nav-link active text-warning " href="{% url 'accounts:profile' user.username %}"><b>마이페이지</b></a>
           </li>
           <li class="nav-item">
@@ -55,38 +55,36 @@
       </div>
     </div>
   </nav>
-  <hr class='mb-0'>
   
   
   {% comment %} 비로그인 상태의 출력 {% endcomment %}
     {% else %}
     
-    <nav class="navbar navbar-expand-lg bg-success">
+    <nav class="navbar navbar-expand-lg bg-primary bg-opacity-25">
       <div class="d-flex container-fluid">
-        <a class="navbar-brand ms-5 mt-3" href="{% url 'movies:index' %}"><h1 class="text-warning">일타무비</h1></a>
+        <a class="navbar-brand ms-5" href="{% url 'movies:index' %}"><img src="{% static '일타무비.png' %}" style="width:120px; height:70px;"></a>
         <button class="navbar-toggler bg-light border-light me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <small>메뉴</small>
         </button>
-        <div class="collapse navbar-collapse me-5 justify-content-end" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse me-5" id="navbarSupportedContent">
           
-          <form class="d-flex me-3 " method="POST" action="{% url 'movies:search' %}">
+          <form class="d-flex" style = "margin-left:200px;"method="POST" action="{% url 'movies:search' %}">
             {% csrf_token %}        
-            <input class="form-control me-2 " style="width:300px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
-            <button class="btn btn-outline-warning" style="width: 70px;" type="submit"> Search </button>
+            <input class="form-control me-2 " style="width:500px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
+            <button class="btn btn-primary" style="width: 80px;" type="submit"> 검색 </button>
         </form>
           <ul class="navbar-nav mx-5 justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link active text-warning " href="{% url 'accounts:login'%}"><b>로그인</b></a>
+            <li class="nav-item" style = "margin-left:100px;">
+              <a class="nav-link active text-dark fs-5" href="{% url 'accounts:login'%}"><b>로그인</b></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-warning" href="{% url 'accounts:signup' %}">회원가입</a>
+              <a class="nav-link active text-dark fs-5" href="{% url 'accounts:signup' %}"><b>회원가입<b></a>
             </li>
           </ul>
           
         </div>
       </div>
     </nav>
-    <hr>
       
     {% endif %}
     {% block content %}
@@ -99,6 +97,4 @@
   {% block script %}
   {% endblock script %}
 </body>
-
-
 </html>

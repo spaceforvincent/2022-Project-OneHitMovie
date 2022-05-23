@@ -12,19 +12,56 @@ from django.core.paginator import Paginator
 
 @require_safe
 def index(request):
-    this_month_movies = Movie.objects.filter(vote_avg__gte = 8.0, released_date__month=datetime.datetime.now().strftime ("%m"))[:20]
-    if datetime.datetime.now().strftime ("%a") == 'Sun':
-        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    #이달의 영화
     if datetime.datetime.now().strftime ("%m")[0] == '0':
         this_month = datetime.datetime.now().strftime ("%m")[1]
     else:
         this_month = datetime.datetime.now().strftime ("%m")
+    this_month_movies = Movie.objects.filter(vote_avg__gte = 8.0, released_date__month=datetime.datetime.now().strftime ("%m"))[:20]
+    
+    #오늘의 영화
+    if datetime.datetime.now().strftime ("%a") == 'Sun':
+        today_message = '일요일이네요... 한 주를 차분하게 마무리 해봅시다!'
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Mon':
+        today_message = '극복하자 월요병!'
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Tue':
+        today_message = ''
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Wed':
+        today_message = '극복하자 월요병!'
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Thu':
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Fri':
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    elif datetime.datetime.now().strftime ("%a") == 'Sat':
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+    
+    #지금의 영화
+    if int(datetime.datetime.now().strftime("%H")) in range(0,7):
+        now_message = "새벽감성... 잔잔한 영화가 필요하실 거에요."
+        now_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '36' and '99' and '9648')
+    elif int(datetime.datetime.now().strftime("%H")) in range(8,12):
+        now_message = "하루를 영화로 시작하려는 당신! 밝은 분위기의 영화를 추천드려요."
+        now_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '14' and '16' and '10402')
+    elif int(datetime.datetime.now().strftime("%H")) in range(12,18):
+        now_message = "점심먹고 많이 졸리시죠? 당신의 잠을 깨워줄 영화들입니다."
+        now_movies =  Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '27' and '28' and '53' and '10752')
+    elif int(datetime.datetime.now().strftime("%H")) in range(18,24):
+        now_message = "수고했어 오늘도~ 하루의 마무리를 위한 영화들입니다."
+        now_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '18' and '35' and '10749' and '10751')
+    
     
     context = {
-        'this_month_movies' : this_month_movies,
         'this_month' : this_month,
+        'this_month_movies' : this_month_movies,
+        'today' : datetime.datetime.now().strftime("%a"),
+        'today_message' : today_message,
         'today_movies' : today_movies,
-        'today' : datetime.datetime.now().strftime("%a")
+        'now_message' : now_message,
+        'now_movies' : now_movies,
     }
     return render(request, 'movies/index.html', context)
 

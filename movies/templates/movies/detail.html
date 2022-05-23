@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css'>
 <style>
 .bd-sidebar {
   position: sticky;
   top: 4rem;
   z-index: 1000;
   height: 1000px;
-  background: yellowgreen;
+  background: skyblue;
   border-right: 1px solid rgba(0,0,0,.1);
   overflow-y: auto;
   min-width: 160px;
@@ -26,7 +25,7 @@
 
 <div class="container-fluid ">
   <div class="row flex-nowrap">
-    <div class="col-3 bd-sidebar ">
+    <div class="col-3 bd-sidebar bg-primary bg-opacity-50">
       <h5 class='d-flex justify-content-center my-3'>연관상품추천</h5>
       {% if request.user.isgeneral == '0' %}
       <a class='d-flex justify-content-center btn btn-dark' href= "{% url 'community:create' movie.pk%}" role="button">홍보하기</a>
@@ -45,10 +44,16 @@
       <hr>
       <div class='d-flex text-light mx-3'>
       <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
-      <p class="mx-3">{{ movie.overview|linebreaks }}</p>
+      <div class="mx-3">{{ movie.overview|linebreaks }}
+        <div class='d-flex'>장르 : 
+          {% for genre in movie.genres.all %}
+          {{genre}}
+          &middot;
+          {% endfor %}
+          </div>
+      </div>
       <hr>
     </div>
-    
     <div class='d-flex justify-content-center my-5'>
       <form class="like-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
