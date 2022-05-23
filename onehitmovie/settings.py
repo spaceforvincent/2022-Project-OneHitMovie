@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     # django allauth(OAuth 가능)
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     # native
     'django.contrib.admin',
     'django.contrib.auth',
@@ -180,8 +182,16 @@ CORS_ALLOW_ALL_ORIGINS: True
 # CORS_ALLOW_CREDENTIALS = True
 
 # django.contrib.sites 에서 등록 필요
+AUTHENTICATION_BACKENDS = (
+'django.contrib.auth.backends.ModelBackend',
+'allauth.account.auth_backends.AuthenticationBackend',
+)   
+
+LOGIN_REDIRECT_URL = '/'
+
 SITE_ID = 1
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
 # drf 설정
 REST_FRAMEWORK = {
     # 기본 인증을 기본 Token 으로 설정

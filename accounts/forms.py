@@ -53,7 +53,11 @@ class CustomUserCreationForm(UserCreationForm):
     
 	CHOICES=[('1', '일반 회원'),('0','판매 회원')]
 
-	isgeneral = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect, required=True)
+	isgeneral = forms.ChoiceField(
+		label='회원 유형',
+		choices=CHOICES, 
+		widget=forms.RadioSelect, 
+		required=True)
 
 	picture = forms.ImageField(
 		label="프로필 사진",
@@ -95,4 +99,4 @@ class CustomUserCreationForm(UserCreationForm):
     
 	class Meta(UserCreationForm.Meta):
 		model = get_user_model() #user
-		fields = UserCreationForm.Meta.fields + ('email', 'bio', 'birthday', 'picture', 'blog_url', 'isgeneral')
+		fields = UserCreationForm.Meta.fields + ('email', 'isgeneral', 'birthday', 'picture', 'blog_url', 'bio')

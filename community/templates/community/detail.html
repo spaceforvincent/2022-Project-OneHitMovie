@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class='d-flex justify-content-center'>{{ advertisement.title }}</h2>
-<div class="d-flex justify-content-center"><img class = "mt-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
-            width="500rem" height="500rem" alt=""></div>
-<p>{{ advertisement.content |linebreaks}}</p>
-<hr>
+<div class='d-flex justify-content-center'>
+<h2>{{ advertisement.title }}</h2>
+<div>
+    <img class = "mt-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+            width="500rem" height="500rem" alt="">
+            <hr>
+        </div>
+        <div>{{ advertisement.content |linebreaks}}</div>
+    </div>
 {% if user == advertisement.user %}
   <a href="{% url 'community:update' advertisement.pk %}">[UPDATE]</a>
   <form action="{% url 'community:delete' advertisement.pk %}" method="POST">
@@ -24,7 +28,7 @@
     <li>
       {{ comment.user }} - {{ comment.content }}
       {% if user == comment.user %}
-        <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST" class="d-inline">
+        <form action="{% url 'community:comments_delete' advertisement.pk comment.pk %}" method="POST" class="d-inline">
           {% csrf_token %}
           <input type="submit" value="DELETE">
         </form>

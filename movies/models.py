@@ -18,6 +18,7 @@ class Movie(models.Model) :
     poster_path = models.CharField(max_length=500, null=True, blank=True)
     genres = models.ManyToManyField(Genre, related_name= 'movies')
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
+    wish_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wish_movies')
 
     def __str__(self):
         return self.title

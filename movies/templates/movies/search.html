@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class = "d-flex my-3 justify-content-center">
-<h2 class = 'text-light'>회원 검색</h2>
+<h2>회원 검색</h2>
 <br>
 </div>
 
@@ -12,7 +12,7 @@
 {% for user in users %}
 <br>
 <div class="d-flex mx-5">    
-<a class = "text-decoration-none text-light justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
+<a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
             <img src=
                 {% if user.picture %}
                     "{{ user.picture.url }}"
@@ -22,7 +22,7 @@
                 width="150rem" height="150rem" style="border-radius: 50%;" alt="">
                 <p class="my-3">{{user}}님의 프로필</p>
         </a>
-        <p class="text-light mx-5">{{user.bio}}<p>
+        <p class="mt-5 mx-5">{{user.bio}}<p>
     </div>
         {% endfor %}
         <div class='d-flex justify-content-center'>
@@ -34,7 +34,7 @@
     {% endif %}
 
 <div class = "d-flex my-3 justify-content-center">
-    <h2 class = 'text-light'>영화 검색</h2>
+    <h2>영화 검색</h2>
         <br>
     </div>
 {% if movies%}
@@ -61,7 +61,7 @@
         {% bootstrap_pagination movies%}
     </div>
 {% elif searched %}
-    <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched }})는 찾을 수 없습니다...</i></b>
+    <b class = 'd-flex my-5 justify-content-center'><i>({{ searched }})는 찾을 수 없습니다...</i></b>
     {% endif %}
 
 

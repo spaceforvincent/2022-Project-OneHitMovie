@@ -24,17 +24,18 @@ def index(request):
         today_message = '일요일이네요... 한 주를 차분하게 마무리 해봅시다!'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Mon':
-        today_message = '극복하자 월요병!'
+        today_message = '극복하자 월요병! 잠깨세요!'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Tue':
-        today_message = ''
+        today_message = '화요일엔 화끈한 영화로 달립시다!'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Wed':
-        today_message = '극복하자 월요병!'
+        today_message = '!'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Thu':
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Fri':
+        today_message = '기다리고 기다리던 불금이네요! 진득하게 시리즈물로 가봅시다~'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Sat':
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
@@ -143,5 +144,23 @@ def likes(request, movie_pk):
             'count' : movie.like_users.count(),
         }
 
+        return JsonResponse(context)
+    return redirect('accounts:login')
+
+@require_POST
+def wish(request, movie_pk):
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        user = request.user
+
+        if movie.wish_users.filter(pk=user.pk).exists():
+            movie.wish_users.remove(user)
+            wished = False
+        else:
+            movie.wish_users.add(user)
+            wished = True
+        context = {
+            'wished' : wished,
+        }
         return JsonResponse(context)
     return redirect('accounts:login')

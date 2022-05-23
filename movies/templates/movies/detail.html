@@ -40,9 +40,9 @@
       <br>
     </div>
     <main class="col-9 py-md-3 pl-md-5 bd-content" role="main">
-      <h1 class="text-light mt-3 mx-3">{{movie.title}}</h1>
+      <h1 class="text-dark mt-3 mx-3">{{movie.title}}</h1>
       <hr>
-      <div class='d-flex text-light mx-3'>
+      <div class='d-flex text-dark mx-3'>
       <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
       <div class="mx-3">{{ movie.overview|linebreaks }}
         <div class='d-flex'>장르 : 
@@ -54,29 +54,41 @@
       </div>
       <hr>
     </div>
-    <div class='d-flex justify-content-center my-5'>
-      <form class="like-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
+    <div class='d-flex justify-content-center my-5 '>
+      <form class="like-form mx-5" data-movie-id="{{ movie.pk }}" action="{% url 'movies:likes' movie.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
         {% if user in movie.like_users.all %}
-        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
-        <span id="like-count-{{ movie.pk }}" class="text-light fs-5"> {{movie.like_users.all|length}} </span>
+        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas-like" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
+        <span id="like-count-{{ movie.pk }}" class="fs-5"> {{movie.like_users.all|length}} </span>
         {% else %}
-        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas" class="fas fa-heart fa-2xl" style="color:white;"></i></button>
-        <span id="like-count-{{ movie.pk }}" class="text-light fs-5">{{movie.like_users.all|length}}</span>
+        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas-like" class="fas fa-heart fa-2xl" style="color:black;"></i></button>
+        <span id="like-count-{{ movie.pk }}" class="fs-5">{{movie.like_users.all|length}}</span>
+        {% endif %}
+      </form>
+      <form class="wish-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:wish' movie.pk %}" method="POST" class="d-inline">
+        {% csrf_token %}
+        {% if user in movie.wish_users.all %}
+        <button id="wish-{{ movie.pk }}" class="btn btn-link "><i id="fas-wish" class="fas fa-folder-plus fa-2xl" style="color:yellow;"></i></button>
+        <small id='wish-text'>보고싶은 영화 리스트에 추가</small>
+        {% else %}
+        <button id="wish-{{ movie.pk }}" class="btn btn-link "><i id="fas-wish" class="fas fa-folder-plus fa-2xl" style="color:black"></i></button>
+        <small id='wish-text'>보고싶은 영화 리스트에 추가</small>
         {% endif %}
       </form>
       </div>
     
       <hr>
-      <h4 class="text-light"> 댓글목록 </h4>
+      <h4 class="text-dark"> 댓글목록 </h4>
       {% if comments%}
-        <p class="text-light"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
+        <p class="text-dark"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
       {% endif %}
       <ul>
       {% for comment in comments %}
       <li class='d-flex'>
-        {{ comment.user.picture.url }} <p class="mx-3 text-light fs-6">{{comment.user}} : </p> <p class="mx-3 text-light fs-6">{{comment.content}}</p> 
-        <p class="mx-3 fs-6 mb-3 text-warning">{{comment.get_rating_display}}</p> 
+        <img src={% if user.picture %}"{{ user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+            width="50rem" height="50rem" style="border-radius: 50%;" alt="">
+        <p class="mx-3 text-dark fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-dark fs-6 mt-2">{{comment.content}}</p> 
+        <p class="mx-3 fs-6 mb-3 text-warning mt-2">{{comment.get_rating_display}}</p> 
         {% if comment.user == request.user %}
         {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
         <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">
@@ -114,8 +126,8 @@
 
 <script>
   // 1. form 태그 class 선택자를 활용해서 선택
-  const forms = document.querySelectorAll('.like-form')
-  forms.forEach(form => {
+  const likeForms = document.querySelectorAll('.like-form')
+  likeForms.forEach(form => {
     form.addEventListener('submit', event => {
       event.preventDefault() //원래 submit이 하는 기능 취소
       const movieId = event.target.dataset.movieId
@@ -129,15 +141,42 @@
           const count = response.data.count
           const liked = response.data.liked
           //const { count, liked } = response.data
-          const likeButton = document.querySelector('#fas')
+          const likeButton = document.querySelector('#fas-like')
           const likeCount = document.querySelector(`#like-count-${movieId}`)
           if (liked === true) {
             likeButton.setAttribute('style', 'color:red;')
           }
           else{
-            likeButton.setAttribute('style', 'color:white;')
+            likeButton.setAttribute('style', 'color:black;')
           }
           likeCount.innerText = count
+        })
+  })
+})
+
+const wishForms = document.querySelectorAll('.wish-form')
+  wishForms.forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault() //원래 submit이 하는 기능 취소
+      const movieId = event.target.dataset.movieId
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+      axios({
+        method: 'POST',
+        url: `/movies/${movieId}/wish/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+        .then(response => {
+          const wished = response.data.wished
+          const wishButton = document.querySelector('#fas-wish')
+          const wishText = document.querySelector('#wish-text')
+          if (wished === true) {
+            wishButton.setAttribute('style', 'color:yellow;')
+            wishText.innerText='보고싶은 영화 리스트에서 제거'
+          }
+          else{
+            wishButton.setAttribute('style', 'color:black;')
+            wishText.innerText='보고싶은 영화 리스트에 추가'
+          }
         })
   })
 })

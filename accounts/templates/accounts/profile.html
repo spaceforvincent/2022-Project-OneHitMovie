@@ -8,9 +8,9 @@
             width="150rem" height="150rem" style="border-radius: 50%;" alt="">
     </div>
     {% with followers=person.followers.all followings=person.followings.all%}
-    <div class = 'text-light mt-5 pt-3 ms-0'>
-        <h2 class="text-light">{{person.username}}<span class="fs-6 ms-3">{{person.get_isgeneral_display}}</span></h2>
-    마이무비 : {{ my_movies | length }} / 팔로워 : <span id = 'followers'>{{ followers|length }}</span> / 팔로잉 : <span id = 'followings'>{{ followings|length }}</span>  
+    <div class = 'text-dark mt-5 pt-3 ms-0'>
+        <h2 class="text-dark">{{person.username}}<span class="fs-6 ms-3">{{person.get_isgeneral_display}}</span></h2>
+    팔로워 : <span id = 'followers'>{{ followers|length }}</span> / 팔로잉 : <span id = 'followings'>{{ followings|length }}</span>  
     <div>
         {% if user != person %}
         <form class = 'follow-form' data-person-id="{{ person.pk }}" action="{% url 'accounts:follow' person.pk%}" method = "POST">
@@ -33,18 +33,51 @@
 </div>
 <br>
 <br>
-{% comment %} 마이무비 목록 {% endcomment %}
+{% comment %} 일반 회원 프로필 {% endcomment %}
+
 {% if person.isgeneral == '1' %}
-<div class = 'd-flex my-5 justify-content-evenly'>
-    <h2 class="text-light">{{person.username}}님의 마이무비</h2>
+<div class='d-flex'>
+<button id = 'myMovieButton' type="button" class="d-flex btn btn-primary" style="margin-left:50px;">평가한 영화</button>
+<button id = 'wishMovieButton' type="button" class="d-flex btn btn-warning mx-3">보고싶은 영화</button>
 </div>
-<div class = 'd-flex justify-content-center container'>    
- <div class="row">
-    {% for my_movie in my_movies %}
-        <div class = 'col-2 ms-5'>
-    <a class='text-decoration-none text-light ' href="{% url 'movies:detail' my_movie.pk %}">
-        <img src="https://image.tmdb.org/t/p/original/{{my_movie.poster_path}}" style = "width: 200px; height: 250px;" alt="">
-        <p class="d-flex justify-content-center ms-2">{{my_movie.title}}</p>
+<div id='content'>
+    <div id = 'my-movie' style = 'display:block;'>
+        <h3 class="my-3" style="margin-left:50px;">{{person}}님이 평가하신 영화는 {{my_movies|length}}개 입니다.</h3>
+    <div class = 'd-flex container border border-dark'>    
+     <div class="row mt-5">
+        {% for my_movie in my_movies %}
+            <div class = 'd-flex justify-content-start col-1 ms-5' style='margin-left:50px; margin-right:50px;'>
+        <a class='text-decoration-none text-dark ' href="{% url 'movies:detail' my_movie.pk %}">
+            <img src="https://image.tmdb.org/t/p/original/{{my_movie.poster_path}}" style = "width: 200px; height: 250px;" alt="">
+            <div class="d-flex justify-content-center ms-2">{{my_movie.title|truncatechars:15}}</div>
+            {% for comment in my_movie.movie_comments.all %}
+            {% if comment.user_id == person.pk %}
+            <p class="d-flex justify-content-center text-warning ms-2">{{comment.get_rating_display}}</p>
+            {% endif %}
+            {% endfor %}
+        </a>
+    </div>
+    {% endfor %}
+    </div>  
+    </div>
+    <br>
+    <br>
+</div>
+
+<div id = 'wish-movie' style = 'display:none;'>
+    <h3 class="my-3" style="margin-left:50px;">{{person}}님이 보고싶어 하시는 영화는 {{wish_movies|length}}개 입니다.</h3>
+<div class = 'd-flex container border border-dark'>    
+ <div class="row mt-5">
+    {% for wish_movie in wish_movies %}
+        <div class = 'd-flex justify-content-start col-1 ms-5' style='margin-left:50px; margin-right:50px;'>
+    <a class='text-decoration-none text-dark ' href="{% url 'movies:detail' wish_movie.pk %}">
+        <img src="https://image.tmdb.org/t/p/original/{{wish_movie.poster_path}}" style = "width: 200px; height: 250px;" alt="">
+        <div class="d-flex justify-content-center ms-2">{{wish_movie.title|truncatechars:15}}</div>
+        {% for comment in wish_movie.movie_comments.all %}
+        {% if comment.user_id == person.pk %}
+        <p class="d-flex justify-content-center text-warning ms-2">{{comment.get_rating_display}}</p>
+        {% endif %}
+        {% endfor %}
     </a>
 </div>
 {% endfor %}
@@ -52,6 +85,9 @@
 </div>
 <br>
 <br>
+</div>
+
+{% comment %} 판매자 프로필 {% endcomment %}
 {% else %}
 <div class = 'd-flex my-5 justify-content-evenly'>
     <h2 class="text-light">{{person.username}}님의 씨네마켓</h2>
@@ -80,8 +116,8 @@
 {% endblock content %}
 
 {% block script %}
-{% if user != person %}
 <script>
+{% if user != person %}
   // 1. form 태그 class 선택자를 활용해서 선택 
   const followForm = document.querySelector('.follow-form')
   followForm.addEventListener('submit', event => {
@@ -105,15 +141,40 @@
             followButton.style.color = "black"
           }
           else{
-            followButton.setAttribute("value","팔로우")
-            followButton.style.color = "blue"
-          }
-          followings.innerText = followings_count 
-          followers.innerText = followers_count 
-       })
-  })
-</script>
+              followButton.setAttribute("value","팔로우")
+              followButton.style.color = "blue"
+            }
+            followings.innerText = followings_count 
+            followers.innerText = followers_count 
+        })
+    })
 {% endif %}
+    
+  const content = document.querySelector('#content');
+  const child = content.firstChild
+  const myMovieButton = document.querySelector('#myMovieButton')
+  const wishMovieButton = document.querySelector('#wishMovieButton')
+  
+  const myMovie = document.querySelector('#my-movie')  
+  const wishMovie = document.querySelector('#wish-movie')
+  
+  myMovieButton.addEventListener('click', event => {
+    while ( content.hasChildNodes() )
+     { content.removeChild( content.firstChild ); }
+
+    myMovie.style.display='block'
+    content.append(myMovie)
+  })
+  
+  
+  wishMovieButton.addEventListener('click', event => {
+    while ( content.hasChildNodes() )
+    { content.removeChild( content.firstChild ); }
+    wishMovie.style.display='block'
+    content.append(wishMovie)
+  })
+
+</script>
 {% endblock script %}
 
 
