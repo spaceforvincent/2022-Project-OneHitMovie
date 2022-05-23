@@ -16,7 +16,7 @@
     <h1 class="logo mt-5 text-dark"><b>지금의 영화</b></h1>
     <h3 class="d-flex justify-content-center mb-0">{{now_message}}</h3>
     
-    <div class="d-flex container">
+    <div class="d-flex container ">
       <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
           {% for now_movie in now_movies %}
         <div class="movie" id="movie0">
@@ -76,7 +76,7 @@
   <div id='today_movie' style='display:none;'>
     <h1 class="logo text-black mt-5"><b>오늘의 영화</b></h1>
     <h3 class="d-flex justify-content-center mb-0">{{today_message}}</h3>
-    <div class="d-flex container">
+    <div class="container">
       <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">
           {% for today_movie in today_movies %}
         <div class="movie" id="movie0">
@@ -106,7 +106,6 @@
 
 {% endblock content %} 
 {% block script %}
-
 <script>
 
   

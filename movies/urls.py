@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:movie_pk>/comments/<int:comment_pk>/delete', views.comments_delete, name='comments_delete'), # GET / POST
     path('<int:movie_pk>/likes/', views.likes, name='likes'),
     path('<int:movie_pk>/wish/', views.wish, name='wish'),
-    path('search/', views.search, name='search'),   
+    path('search/', views.search, name='search'),
+    path('practice/', views.user_recommendation, name='practice'),   
 ]

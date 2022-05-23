@@ -3,11 +3,16 @@ from django.views.decorators.http import require_http_methods, require_POST, req
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from .models import Movie, MovieComment
+from .models import Movie, MovieComment, Genre
 from .forms import MovieCommentForm
 from django.db.models import Q
 import datetime
 from django.core.paginator import Paginator
+import pandas as pd
+import numpy as np
+import sqlite3
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 
 
 @require_safe
@@ -164,3 +169,78 @@ def wish(request, movie_pk):
         }
         return JsonResponse(context)
     return redirect('accounts:login')
+
+
+def user_recommendation(request):
+
+    con = sqlite3.connect("db.sqlite3")
+
+    #movies
+    movies = Movie.objects.all()
+    
+    df = []
+    for movie in movies:
+        movie_genres= movie.genres.all()
+        
+        genres = []
+        for genre in movie_genres:
+            genres.append(genre.name)
+        df.append([movie.title, *genres])
+
+    title = []
+    for row in df:
+        title.append(row.pop(0))
+        
+    title = pd.DataFrame(title).rename(columns={0:'title'})
+    genres = df
+    
+    lst = []
+    for i in range(len(genres)):
+        lst.append('|'.join(genres[i]))
+
+    lst = pd.DataFrame(lst).rename(columns={0:'genres'})
+    
+    df = pd.concat([title,lst], axis=1)
+
+    movies = pd.read_sql("SELECT * FROM movies_movie", con)
+    movies = movies[['id','title']]
+    movies.rename(columns={'id' : 'movie_id'}, inplace = True)
+    
+    movies = pd.merge(movies,df, on='title')
+
+    genres = movies['genres'].str.get_dummies(sep='|') #영화의 장르 여부를 1과 0으로 구분
+
+    #ratings
+    ratings = pd.read_sql("SELECT movie_id,user_id,rating FROM movies_moviecomment", con)
+    ratings = ratings.astype({'rating' : 'float'})
+    ratings = ratings.merge(genres, how='inner', left_on='movie_id', right_index=True)
+    ratings = ratings.replace(0, np.nan)
+
+    train, test = train_test_split(ratings, random_state=17, test_size=0.25)
+    
+    genre_cols = genres.columns
+    for genre_col in genre_cols:
+        train[genre_col] = train[genre_col] * train['rating']
+
+    #각 유저별로 장르들에 준 평점들의 평균
+    user_profile = train.groupby('user_id')[genre_cols].mean()
+    
+    predict = []
+
+    for idx, row in test.iterrows():
+        user = row['user_id']
+    #user_profile * item_profile
+        predict.append((user_profile.loc[user] * row[genre_cols]).mean())
+    test['predict'] = predict
+    test.loc[test['predict'].isnull(), 'predict'] = train['rating'].mean()
+    mse = mean_squared_error(test['rating'],test['predict'])
+    rmse = np.sqrt(mse)
+
+    context = {
+        'movies':movies.to_html(),
+        'genres_dummies':genres.to_html(),
+        'ratings' : ratings.to_html(),
+        'rmse' : rmse
+    }
+    return render(request, 'movies/practice.html', context)
+
