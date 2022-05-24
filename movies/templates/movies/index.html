@@ -26,22 +26,14 @@
             alt="" srcset="">
           </a>
           <div class="description">
-            <p class="mx-2 mb-1">{{now_movie.title|truncatechars:16}}</p>
-            <small class="description__length mx-2"> ★ {{now_movie.vote_avg}}</small>
-            <div class="py-0 description__buttons-container">
-              <div class="description__button"><i class="fas fa-plus"></i></div>
-              <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
-            </div>
-            <div class="description__text-container">
-            </div>
+            <p class="mx-2 mb-1">{{now_movie.title|truncatechars:16}}</p><br>
+            <small class="description__length mx-2"> ★ {{now_movie.vote_avg}}</small>   
           </div>
         </div>
         {% endfor %}
       </div>
     </div>
     </div>
-  
-  
 </div>
 
 <div id='this_month_movie' style='display:none;'>
@@ -60,12 +52,6 @@
         <div class="description">
           <p class="mx-2 mb-1">{{this_month_movie.title|truncatechars:16}}</p>
           <small class="description__length"> ★ {{this_month_movie.vote_avg}}</small>
-          <div class="py-0 description__buttons-container">
-            <div class="description__button"><i class="fas fa-plus"></i></div>
-            <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
-          </div>
-          <div class="description__text-container">
-          </div>
         </div>
       </div>
       {% endfor %}
@@ -88,12 +74,6 @@
           <div class="description">
             <small class="mx-2">{{today_movie.title|truncatechars:16}}</small>
             <small class="description__length"> ★ {{today_movie.vote_avg}}</small>
-            <div class="py-0 description__buttons-container">
-              <div class="description__button"><i class="fas fa-plus"></i></div>
-              <div class="description__button"><i class="fas fa-thumbs-up"></i></div>
-            </div>
-            <div class="description__text-container fs-6">
-            </div>
           </div>
         </div>
         {% endfor %}

@@ -2,68 +2,101 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class = "d-flex my-3 justify-content-center">
-<h2>회원 검색</h2>
-<br>
+<div class='d-flex justify-content-center my-5'>
+<button id = 'user' type="button" class="btn btn-light mx-2">회원검색</button>
+<button id = 'movie' type="button" class="btn btn-light mx-2">영화검색</button>
+</div>
+
+<div id='content'>
+
+    <div id = 'user-search' style='display:block;'>
+        
+        <h2 class='d-flex justify-content-center'>회원 검색</h2>
+        {% if users %}     
+        {% for user in users %}
+        <br>
+        <br>
+        <div class="d-flex mx-5">    
+        <a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
+                    <img src=
+                        {% if user.picture %}
+                            "{{ user.picture.url }}"
+                        {% else %}
+                            "https://i.stack.imgur.com/34AD2.jpg"
+                        {% endif %}
+                        width="150rem" height="150rem" style="border-radius: 50%;" alt="">
+                        <p class="my-3">{{user}}님의 프로필</p>
+                </a>
+                <p class="mt-5 mx-5">{{user.bio}}</p>
+            </div>
+                {% endfor %}
+                <div class='d-flex justify-content-center'>
+                    {% bootstrap_pagination users %}
+                </div>
+        {% elif searched %}
+            <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
+        
+            {% endif %}
+            </div>
+
 </div>
 
 
-{% if users %}     
-{% for user in users %}
-<br>
-<div class="d-flex mx-5">    
-<a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
-            <img src=
-                {% if user.picture %}
-                    "{{ user.picture.url }}"
-                {% else %}
-                    "https://i.stack.imgur.com/34AD2.jpg"
-                {% endif %}
-                width="150rem" height="150rem" style="border-radius: 50%;" alt="">
-                <p class="my-3">{{user}}님의 프로필</p>
-        </a>
-        <p class="mt-5 mx-5">{{user.bio}}<p>
-    </div>
-        {% endfor %}
-        <div class='d-flex justify-content-center'>
-            {% bootstrap_pagination users%}
+<div id = 'movie-search' style='display:none;'>
+        
+    <h2 class='d-flex justify-content-center'>영화 검색</h2>
+    {% if movies %}
+    <div class="container">
+        <div class="row">     
+    {% for movie in movies %}
+    <div class="col-2 mx-3">    
+    <a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'movies:detail' movie.pk%} ">
+                <img src=
+                        "https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" width="150rem" height="150rem">
+                    </a>
+                    <div class='my-2'>{{movie.title}}</div>
         </div>
-{% elif searched %}
-    <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
-
-    {% endif %}
-
-<div class = "d-flex my-3 justify-content-center">
-    <h2>영화 검색</h2>
-        <br>
-    </div>
-{% if movies%}
-<br>
-<div class=" container">
-    <div class="row">
-        {% for movie in movies %}
-        <div class=" col-2 mx-3">    
-<a class = " text-decoration-none text-light " href=" {% url 'movies:detail' movie.pk %} ">
-            <img src=
-                {% if movie.poster_path %}
-                    "https://image.tmdb.org/t/p/original/{{movie.poster_path}}"
-                {% else %}
-                    "https://i.stack.imgur.com/34AD2.jpg"
-                {% endif %}
-                width="150rem" height="150rem" alt="">
-            </a>
-            <div class='my-2'>{{movie.title}}</div>
+            {% endfor %}
+        
+            <div class='d-flex justify-content-center'>
+                {% bootstrap_pagination movies %}
+            </div>
+    {% elif searched %}
+        <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
+    
+        {% endif %}
         </div>
-        {% endfor %}
-    </div>
-    </div> 
-    <div class='d-flex justify-content-center'>
-        {% bootstrap_pagination movies%}
-    </div>
-{% elif searched %}
-    <b class = 'd-flex my-5 justify-content-center'><i>({{ searched }})는 찾을 수 없습니다...</i></b>
-    {% endif %}
-
 
 
 {% endblock %}
+{% block script %}
+<script>
+
+  
+    const content = document.querySelector('#content');
+    const child = content.firstChild
+    const user = document.querySelector('#user')
+    const movie = document.querySelector('#movie')
+    
+    const userSearch = document.querySelector('#user-search')  
+    const movieSearch = document.querySelector('#movie-search')
+    
+    user.addEventListener('click', event => {
+      while ( content.hasChildNodes() )
+       { content.removeChild( content.firstChild ); }
+  
+      userSearch.style.display='block'
+      content.append(userSearch)
+    })
+    
+    
+    movie.addEventListener('click', event => {
+      while ( content.hasChildNodes() )
+      { content.removeChild( content.firstChild ); }
+      movieSearch.style.display='block'
+      content.append(movieSearch)
+    })
+  
+  </script>
+{% endblock script %}
+

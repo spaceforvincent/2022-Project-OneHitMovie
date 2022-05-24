@@ -44,12 +44,12 @@ def comments_create(request, pk):
     return redirect('accounts:login')
 
 @require_POST
-def comments_delete(request, article_pk, Comment_pk):
+def comments_delete(request, advertisement_pk, Comment_pk):
     if request.user.is_authenticated:
         comment = get_object_or_404(AdvertisementComment, pk=Comment_pk)
         if request.user == comment.user:
             comment.delete()
-    return redirect('community:detail', article_pk)
+    return redirect('community:detail', advertisement_pk)
 
 
 @require_POST

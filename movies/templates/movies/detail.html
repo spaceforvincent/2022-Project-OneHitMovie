@@ -32,7 +32,13 @@
       {% endif %}
       <ul class="d-flex nav justify-content-center mt-3">
           {% for advertisement in advertisements %}
-        <li><a href="{% url 'community:detail' advertisement.pk%}"><img src="{{advertisement.picture.url}}" style="width:150px; height:150px;"></a></li>
+        <li><a href="{% url 'community:detail' advertisement.pk%}">
+          <img src={% if advertisement.picture %}
+          {{advertisement.picture.url}}
+          {%else%}
+          "https://i.stack.imgur.com/34AD2.jpg"
+          {% endif %}
+          style="width:150px; height:150px;"></a></li>
         {% empty %}
         <p class="d-flex justify-content-center my-5">연관된 상품이 없습니다.</p>
         {% endfor %}

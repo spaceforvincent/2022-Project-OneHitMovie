@@ -33,16 +33,18 @@ def index(request):
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Tue':
         today_message = '화요일엔 화끈한 영화로 달립시다!'
-        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12') & Movie.objects.filter(vote_avg__gte = 8.0, genres = '28')
     elif datetime.datetime.now().strftime ("%a") == 'Wed':
-        today_message = '!'
-        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
+        today_message = '이제 겨우 수요일...? 시간 왜이렇게 안가죠. 당신의 시간을 뺏어드립니다.'
+        today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '99') & Movie.objects.filter(vote_avg__gte = 8.0, genres = '9648')
     elif datetime.datetime.now().strftime ("%a") == 'Thu':
+        today_message = ''
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Fri':
         today_message = '기다리고 기다리던 불금이네요! 진득하게 시리즈물로 가봅시다~'
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     elif datetime.datetime.now().strftime ("%a") == 'Sat':
+        today_message = ''
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '12' and '28')
     
     #지금의 영화
@@ -235,6 +237,16 @@ def user_recommendation(request):
     test.loc[test['predict'].isnull(), 'predict'] = train['rating'].mean()
     mse = mean_squared_error(test['rating'],test['predict'])
     rmse = np.sqrt(mse)
+
+    for idx, row in test.iterrows():
+        user = row['user_id']
+    #user_profile * item_profile
+        predict.append((user_profile.loc[user] * row[genre_cols]).mean())
+    test['predict'] = predict
+    test.loc[test['predict'].isnull(), 'predict'] = train['rating'].mean()
+    mse = mean_squared_error(test['rating'],test['predict'])
+    rmse = np.sqrt(mse)
+
 
     context = {
         'movies':movies.to_html(),

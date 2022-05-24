@@ -97,7 +97,7 @@
     {% for advertisement in advertisements %}
         <div class = 'col-2'>
     <a class='text-decoration-none text-light ' href="{% url 'community:detail' advertisement.pk %}">
-        <img src="{{advertisement.picture.url}}" style = "width: 200px; height: 250px;" alt="">
+        <img src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} style = "width: 200px; height: 250px;" alt="">
     </a>
 </div>
 <p class="">{{advertisement.title}}</p>
