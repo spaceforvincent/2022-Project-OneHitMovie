@@ -2,11 +2,37 @@
 
 {% block content %}
 
-<h1 class = "d-flex my-5 text-light justify-content-center">회원정보수정</h1>
-<form class = "text-light" action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
+<h1 class = "d-flex my-5 justify-content-center">회원정보수정</h1>
+<form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <div class = "justify-content-center">{{form.as_p}}</div>
-    <input type="submit">
+    <div class = "d-flex my-5" style="margin-left:500px;">이메일 : {{form.email}}</div>
+    <div class = "my-5" style="margin-left:500px;">프로필사진 : {{form.picture}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >자기소개 : {{form.bio}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;"> 대표 SNS : {{form.blog_url}}</div>
+    <input class = 'd-flex btn btn-primary' style="margin-left:700px;" type="submit">
 </form>
-<a class = "text-light" href="{% url 'movies:index' %}">BACK</a>
+
+<a class="text-decoration-none" href="{% url 'movies:index' %}">
+    <form class = "d-flex justify-content-center" onclick = 'onClick();'action="{% url 'accounts:delete' %}" method = 'POST'>
+      {% csrf_token %}
+      <input class = "btn btn-danger my-5" type="submit" value = "회원탈퇴"">
+    </form>
+  </a>
+
+
 {% endblock content %}
+{% block script %}
+
+<script>
+    function onClick() {
+        if (!confirm("정말 탈퇴하시겠습니까?")) {
+            console.log('user cancelled');
+        } else {
+            console.log('user deleted');
+        }
+    }
+
+{% endblock script %}
+
+
+

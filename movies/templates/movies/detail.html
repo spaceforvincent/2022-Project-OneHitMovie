@@ -99,7 +99,7 @@
         {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
         <form action="{% url 'movies:comments_delete' movie.pk comment.pk%}" method="POST" class="d-inline">
           {% csrf_token %}
-          <input type="submit" value = "삭제">
+          <input class='btn btn-danger' type="submit" value = "삭제">
         </form>
         {% endif %}
       </li>
@@ -111,12 +111,12 @@
     {% if request.user.is_authenticated %}
     
     
-    <form action="{% url 'movies:comments_create' movie.pk%}" method="POST">
+    <form class='d-flex justify-content-center' action="{% url 'movies:comments_create' movie.pk%}" method="POST">
       {% csrf_token %}
       <table>
       {{comment_form.as_table}}
       </table>
-      <input type="submit">
+      <input class = 'btn btn-primary' style='margin-top:30px; height:85px;'type="submit">
     </form>
     {% else %}
     <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요!</a>

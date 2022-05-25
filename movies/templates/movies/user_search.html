@@ -2,18 +2,10 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class='d-flex justify-content-center my-5'>
-<button id = 'user' type="button" class="btn btn-light mx-2">회원검색</button>
-<button id = 'movie' type="button" class="btn btn-light mx-2">영화검색</button>
-</div>
-
-<div id='content'>
-
-    <div id = 'user-search' style='display:block;'>
         
         <h2 class='d-flex justify-content-center'>회원 검색</h2>
-        {% if users %}     
-        {% for user in users %}
+        {% if user_list %}     
+        {% for user in user_list %}
         <br>
         <br>
         <div class="d-flex mx-5">    
@@ -34,46 +26,20 @@
                     {% bootstrap_pagination users %}
                 </div>
         {% elif searched %}
-            <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
+            <b class = 'd-flex my-5 justify-content-center text-light'><i>({{searched}})는 찾을 수 없습니다...</i></b>
         
             {% endif %}
-            </div>
-
-</div>
 
 
-<div id = 'movie-search' style='display:none;'>
-        
-    <h2 class='d-flex justify-content-center'>영화 검색</h2>
-    {% if movies %}
-    <div class="container">
-        <div class="row">     
-    {% for movie in movies %}
-    <div class="col-2 mx-3">    
-    <a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'movies:detail' movie.pk%} ">
-                <img src=
-                        "https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" width="150rem" height="150rem">
-                    </a>
-                    <div class='my-2'>{{movie.title}}</div>
-        </div>
-            {% endfor %}
-        
-            <div class='d-flex justify-content-center'>
-                {% bootstrap_pagination movies %}
-            </div>
-    {% elif searched %}
-        <b class = 'd-flex my-5 justify-content-center text-light'><i>({{ searched}})는 찾을 수 없습니다...</i></b>
-    
-        {% endif %}
-        </div>
+
 
 
 {% endblock %}
 {% block script %}
-<script>
+{% comment %} <script> {% endcomment %}
 
   
-    const content = document.querySelector('#content');
+    {% comment %} const content = document.querySelector('#content');
     const child = content.firstChild
     const user = document.querySelector('#user')
     const movie = document.querySelector('#movie')
@@ -95,7 +61,7 @@
       { content.removeChild( content.firstChild ); }
       movieSearch.style.display='block'
       content.append(movieSearch)
-    })
+    }) {% endcomment %}
   
   </script>
 {% endblock script %}

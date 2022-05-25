@@ -1,14 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load socialaccount %}
 
 {% block content %}
-  <h1 class="d-flex justify-content-center text-light">로그인</h1>
+  
+<div class="position-absolute top-50 start-50 translate-middle">
+  <h1 class="d-flex justify-content-center">로그인</h1>
   <hr>
-  <form class="d-flex justify-content-center text-light" action="" method="POST">
+  <form class="d-flex justify-content-center" action="" method="POST">
     {% csrf_token %}
     <div>{{ form.as_p }}</div>
-    <input class="mx-3" style = "height:80px;" type="submit" value="로그인">
+    <input class="btn btn-light" style = "height:80px;" type="submit" value="로그인">
   </form>
-  <a href="{% provider_login_url 'google' next='/movies/'%}">구글 로그인</a><br>
+  <div class="d-flex justify-content-center text-light my-2">
+      <a href="{% provider_login_url 'google' next='/movies/'%}"><img src="{% static '구글 로그인.png' %}" alt=""></a>
+  </div>
+  <div class="d-flex justify-content-center text-light">
+    <a href="{% provider_login_url 'naver' next='/movies/'%}"><img src="{% static '네이버 로그인.png' %}" style="width:190px; height:43px;" alt=""></a>
+  </div>
   <div id="my-signin2"></div>
+  </div>
 {% endblock content %}

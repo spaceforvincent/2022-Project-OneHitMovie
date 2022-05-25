@@ -8,7 +8,7 @@ class MovieCommentForm(forms.ModelForm):
 	        attrs={
 	        'class': 'my-comment form-control',
 	        'placeholder': '이 영화에 관한 평가를 남겨주세요.',
-	        'rows' : 5,
+	        'rows' : 3,
 	        'cols' : 50,
 	        }
 	    ),

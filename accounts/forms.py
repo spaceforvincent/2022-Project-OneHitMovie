@@ -22,16 +22,16 @@ class CustomUserChangeForm(UserChangeForm):
 	    ),
     )
 
-	birthday = forms.DateField(
-	label='생년월일',
-	widget=forms.NumberInput(
+	email = forms.CharField(
+	label='이메일',
+	widget=forms.TextInput(
 		attrs={
-		'type':'date',
-        'class': 'my-birthday form-horizontal',
-		'placeholder': '생년월일을 입력해주세요',
-		'style' : 'width:200px;'
+		'class': 'my-email form-control input-sm',
+		'placeholder': '이메일 주소를 입력해주세요',
+		'style' : 'width:300px;'
 		}
 	),
+	required=False
 	)
 
 	blog_url = forms.CharField(
@@ -56,8 +56,9 @@ class CustomUserCreationForm(UserCreationForm):
 	isgeneral = forms.ChoiceField(
 		label='회원 유형',
 		choices=CHOICES, 
-		widget=forms.RadioSelect, 
-		required=True)
+		widget=forms.RadioSelect,
+		required=True
+		)
 
 	picture = forms.ImageField(
 		label="프로필 사진",
@@ -72,6 +73,7 @@ class CustomUserCreationForm(UserCreationForm):
 	        'placeholder': '당신을 소개해주세요.',
 	        'rows' : 5,
 	        'cols' : 50,
+			'style' : 'width:400px; height:200px;'
 	        }
 	    ),
     )
@@ -83,6 +85,7 @@ class CustomUserCreationForm(UserCreationForm):
 		'type':'date',
         'class': 'my-birthday form-control',
 		'placeholder': '생년월일을 입력해주세요',
+		'style' : 'width:300px;'
 		}
 	),
 	)
@@ -93,8 +96,20 @@ class CustomUserCreationForm(UserCreationForm):
 		attrs={
 		'class': 'my-blog_url form-control',
 		'placeholder': '대표 SNS 주소를 알려주세요',
-		}
+		'style' : 'width:300px;'
+		},
 	),
+	)
+
+	username = forms.CharField(
+		label='이름',
+		widget=forms.TextInput(
+		attrs={
+		'class': 'my-username form-control',
+		'placeholder': '사용자 이름을 입력하세요',
+		'style' : 'width:300px;'
+		},
+	)
 	)
     
 	class Meta(UserCreationForm.Meta):

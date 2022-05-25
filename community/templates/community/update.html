@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>UPDATE</h1>
+  <h1 class='d-flex justify-content-center'>글 내용 수정</h1>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="수정">
+    <input class ='btn btn-warning' type="submit" value="수정">
   </form>
   <hr>
-  <a href="{% url 'community:index' %}">[back]</a>
 {% endblock content %}

@@ -2,10 +2,19 @@
 
 {% block content %}
 
-<h1>회원가입</h1>
+<h1 class="d-flex justify-content-center">회원가입</h1>
 <form action="{% url 'accounts:signup' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    <div class = "d-flex my-5" style="margin-left:500px;">사용자 이름 : {{form.username}} </div>
+    <div class = "d-flex my-5" style="margin-left:500px;">회원 유형 선택 : {{form.isgeneral}}</div>
+    <div class = "my-5" style="margin-left:500px;">프로필사진 : {{form.picture}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >생년월일 : {{form.birthday}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >대표 홈페이지 : {{form.blog_url}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >자기소개 : {{form.bio}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >비밀번호 : {{form.password1}}</div>
+    <div class = "d-flex my-5" style="margin-left:500px;" >비밀번호 확인: {{form.password2}}</div>
+    
+
     <input type="submit">
 </form>
 <a href="{% url 'movies:index' %}">BACK</a>

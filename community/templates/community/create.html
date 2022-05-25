@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 class='d-flex justify-content-center text-light'>홍보하기</h1>
+  <h1 class='d-flex justify-content-center'>홍보하기</h1>
   <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="작성">
   </form>
-  <a href="{% url 'community:index' %}">[back]</a>
 {% endblock content %}

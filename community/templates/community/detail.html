@@ -1,23 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class='d-flex justify-content-center'>
-<h2>{{ advertisement.title }}</h2>
 <div>
-    <img class = "mt-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
-            width="500rem" height="500rem" alt="">
-            <hr>
-        </div>
-        <div>{{ advertisement.content |linebreaks}}</div>
-    </div>
-{% if user == advertisement.user %}
-  <a href="{% url 'community:update' advertisement.pk %}">[UPDATE]</a>
+<h2 class='d-flex justify-content-center mt-5'>{{ advertisement.title }}</h2>
+    <div class='d-flex justify-content-center'>
+    <img class = "d-flex justify-content-center mt-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+            width="500px" height="500px" alt="">
+            <div class='my-5 mx-5'>{{ advertisement.content |linebreaks}} 
+              {% if user == advertisement.user %}
+  <div class='d-flex'>
+              <a href="{% url 'community:update' advertisement.pk %}"><button class = 'btn btn-warning me-2'>수정</button></a>
   <form action="{% url 'community:delete' advertisement.pk %}" method="POST">
     {% csrf_token %}
-    <input type="submit" value="DELETE">
+    <input class='btn btn-danger' type="submit" value="삭제">
   </form>
+</div>
 {% endif %}
-<a href="{% url 'community:index' %}">[back]</a>
+
+          </div>
+          </div>
 <hr>
 <h4>댓글 목록</h4>
 {% if comments %}
@@ -25,13 +26,17 @@
 {% endif %}
 <ul>
   {% for comment in comments %}
-    <li>
-      {{ comment.user }} - {{ comment.content }}
-      {% if user == comment.user %}
-        <form action="{% url 'community:comments_delete' advertisement.pk comment.pk %}" method="POST" class="d-inline">
-          {% csrf_token %}
-          <input type="submit" value="DELETE">
-        </form>
+    <li class='d-flex'>
+      <img src={% if user.picture %}"{{ user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+          width="50rem" height="50rem" style="border-radius: 50%;" alt="">
+      <p class="mx-3 text-dark fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-dark fs-6 mt-2">{{comment.content}}</p> 
+      <p class="mx-3 fs-6 mb-3 text-warning mt-2">{{comment.get_rating_display}}</p> 
+      {% if comment.user == request.user %}
+      {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
+      <form action="{% url 'community:comments_delete' advertisement.pk comment.pk%}" method="POST" class="d-inline">
+        {% csrf_token %}
+        <input class='btn btn-danger'type="submit" value = "삭제">
+      </form>
       {% endif %}
     </li>
   {% empty %}
@@ -41,11 +46,13 @@
 
 <hr>
 {% if request.user.is_authenticated %}
-  <form action="{% url 'community:comments_create' advertisement.pk %}" method="POST">
+
+  <form class='d-flex justify-content-center' action="{% url 'community:comments_create' advertisement.pk %}" method="POST">
     {% csrf_token %}
-    {{ comment_form }}
-    <input type="submit">
+    {{ comment_form.content }}
+    <input class = 'btn btn-primary' type="submit">
   </form>
+
 {% else %}
   <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
 {% endif %}

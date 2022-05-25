@@ -2,20 +2,22 @@
 
 {% block content %}
   <h1 class="d-flex justify-content-center my-5">씨네마켓</h1>
-  {% if request.user.is_authenticated == False %}
-    <a href="{% url 'accounts:login' %}">[새 글을 작성하려면 로그인하세요.]</a>
-  {% endif %}
-  <hr>
+  
   {% for advertisement in advertisements %}
-  <h3 class="d-flex justify-content-center">{{ advertisement.title }}</h3>
-    <p class="mx-5">작성자 : 
-      <a href="{% url 'accounts:profile' advertisement.user.username %}">{{ advertisement.user }}</a>
+    <p class="d-flex mx-5 justify-content-start">
+      <a class="text-decoration-none text-dark mt-2 ms-3" href="{% url 'accounts:profile' advertisement.user.username %}">
+        <img src={% if advertisement.user.picture %}"{{advertisement.user.picture.url}}"
+      {% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} style="width:50px; height:50px;">
+      {{ advertisement.user }}
+      </a>
     </p>
-    <p class="mx-5">영화 : <a href="{% url 'movies:detail' advertisement.movie.pk%}">{{advertisement.movie}} </p></a>
-    <div class="d-flex justify-content-center"><img src= "{{advertisement.picture.url}}" style="width:500px; height:500px;"></div>
-    <div class="mx-5"><p>{{ advertisement.content |linebreaks}}</p></div>
-
-    <div>
+    <hr>
+    <div >
+    <h5 class="d-flex mx-5 justify-content-end">관련영화 : <a class='mx-2' href="{% url 'movies:detail' advertisement.movie.pk%}"> {{advertisement.movie}} </h5></a>
+    <div class="d-flex justify-content-center"><img src= {% if advertisement.picture %}"{{advertisement.picture.url}}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} style="width:300px; height:300px;"></div>
+    <h3 class="mx-5 my-5">{{ advertisement.title }}</h3>
+    <div class="mx-5"><p>{{ advertisement.content |linebreaks |truncatechars:100}}<a href="{% url 'community:detail' advertisement.pk %}">[더 보기]</a></p></div>
+    </div>
       
   {% if request.user.is_authenticated %}
   <div class="d-flex justify-content-center">    
@@ -40,7 +42,6 @@
         </span>
       </p>
     </div>
-    <a href="{% url 'community:detail' advertisement.pk %}">[DETAIL]</a>
     <hr>
   {% endfor %}
 {% endblock content %}

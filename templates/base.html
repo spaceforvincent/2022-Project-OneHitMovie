@@ -28,26 +28,36 @@
       <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <small>메뉴</small>
       </button>
-      <div class="collapse navbar-collapse mx-5 justify-content-end" id="navbarSupportedContent">
-        <form class="d-flex mx-3 me-5" method="POST" action="{% url 'movies:search' %}">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <select id='selection' class="form-select form-select-sm " onchange = 'onChange();' style="width:100px; height:40px;" aria-label="Default select example">
+          <option value="1">회원검색</option>
+          <option value="2">영화검색</option>
+        </select>
+        <form id = 'search' class="d-flex me-5" method="POST" action="/movies/usersearch/">
           {% csrf_token %}        
           <input class="form-control me-2 " style="width:500px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
           <button class="btn btn-primary me-5" style="width: 80px;" type="submit"> 검색 </button>
       </form>
-        <ul class="navbar-nav ms-2 justify-content-end">
+        <ul class="navbar-nav justify-content-end">
           <li class="nav-item">
-            <a class="nav-link active text-dark fs-5" href="{% url 'accounts:profile' user.username %}"><b>마이페이지</b></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active text-dark fs-5" href="{% url 'community:index'%}"><b>씨네마켓</b></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active text-dark fs-5" onclick='signOut();' href="{% url 'movies:index' %}">
-              <form action="{% url 'accounts:logout' %}" method = "POST">
-                {% csrf_token %}
-                <input class = "text-dark fs-5 fw-bold" style="border:none; background:none;" type="submit" value = "로그아웃">
-              </form>
+            <a class="nav-link active text-dark p-0" href="{% url 'accounts:profile' user.username %}">
+              <div>
+              <img class='mt-2'src= {% static '마이페이지.png'%} style="width:90px; height:70px;">
+            </div>
             </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active mt-1 p-0" href="{% url 'community:index'%}">
+              <div>
+              <img src={%static '씨네마켓.png'%} style="width:90px; height:70px;">
+              </div>
+            </a>
+          </li>
+          <li class="nav-item">
+              <form class="mt-1 p-0"action="{% url 'accounts:logout' %}" method = "POST">
+                {% csrf_token %}
+                <input type= "image" src = {%static '로그아웃.png'%} style="width:90px; height:70px;">
+              </form>
           </li>
         </ul>
         
@@ -66,18 +76,25 @@
           <small>메뉴</small>
         </button>
         <div class="collapse navbar-collapse me-5" id="navbarSupportedContent">
-          
-          <form class="d-flex" style = "margin-left:200px;"method="POST" action="{% url 'movies:search' %}">
+          <select id='selection' class="form-select form-select-sm" onchange = 'onChange();' style=" margin-left:100px; width:100px; height:40px;" aria-label="Default select example">
+            <option value="1">회원검색</option>
+            <option value="2">영화검색</option>
+          </select>
+          <form id = 'search' class="d-flex ms-1" method="POST" action="/movies/usersearch/">
             {% csrf_token %}        
             <input class="form-control me-2 " style="width:500px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
-            <button class="btn btn-primary" style="width: 80px;" type="submit"> 검색 </button>
+            <button class="btn btn-primary" style="width: 80px;" type="submit">검색</button>
         </form>
           <ul class="navbar-nav mx-5 justify-content-end">
             <li class="nav-item" style = "margin-left:100px;">
-              <a class="nav-link active text-dark fs-5" href="{% url 'accounts:login'%}"><b>로그인</b></a>
+              <a class="nav-link active" href="{% url 'accounts:login'%}">
+                <img src={%static '로그인.png'%} style="width:90px; height:70px;">
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active text-dark fs-5" href="{% url 'accounts:signup' %}"><b>회원가입<b></a>
+              <a class="nav-link active" href="{% url 'accounts:signup' %}">
+                <img src={%static '회원가입.png'%} style="width:90px; height:70px;">
+              </a>
             </li>
           </ul>
           
@@ -100,7 +117,21 @@
   }
 </script>
 <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
-  {% block script %}
+<script>
+  function onChange() {
+    const value = document.querySelector("#selection").options[document.querySelector("#selection").selectedIndex].value;
+  const search = document.querySelector('#search')
+  if (value === '1'){
+    search.setAttribute('action', '/movies/usersearch/')
+  } else if (value === '2'){
+    search.setAttribute('action', '/movies/moviesearch/')
+  }
+  }
+</script>  
+
+{% block script %}
+
+
   {% endblock script %}
 </body>
 </html>
