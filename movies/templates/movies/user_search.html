@@ -3,12 +3,11 @@
 
 {% block content %}
         
-        <h2 class='d-flex justify-content-center'>회원 검색</h2>
+        <h2 class='d-flex justify-content-center my-5 text-light'>회원 검색</h2>
         {% if user_list %}     
         {% for user in user_list %}
-        <br>
-        <br>
-        <div class="d-flex mx-5">    
+        {% comment %} <hr style='color:white;'> {% endcomment %}
+        <div class="d-flex mx-5 my-3">    
         <a class = "text-decoration-none text-dark justify-content-center" href=" {% url 'accounts:profile' user.username%} ">
                     <img src=
                         {% if user.picture %}
@@ -17,11 +16,12 @@
                             "https://i.stack.imgur.com/34AD2.jpg"
                         {% endif %}
                         width="150rem" height="150rem" style="border-radius: 50%;" alt="">
-                        <p class="my-3">{{user}}님의 프로필</p>
+                        <div class="justify-content-center text-light ms-3 my-3">{{user}}님의 프로필</div>
                 </a>
-                <p class="mt-5 mx-5">{{user.bio}}</p>
+                <p class="mt-5 mx-5 text-light">{{user.bio}}</p>
             </div>
                 {% endfor %}
+
                 <div class='d-flex justify-content-center'>
                     {% bootstrap_pagination users %}
                 </div>

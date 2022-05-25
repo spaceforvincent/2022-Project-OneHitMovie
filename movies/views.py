@@ -15,8 +15,8 @@ import sqlite3
 from sklearn.linear_model import Lasso
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform as sp_rand
-import matplotlib.pyplot as plt
-import seaborn as sns
+import requests
+from bs4 import BeautifulSoup
 
 @require_safe
 def index(request):
@@ -71,9 +71,47 @@ def index(request):
                     | Movie.objects.filter(vote_avg__gte = 8.0, genres = '35')\
                     | Movie.objects.filter(vote_avg__gte = 8.0, genres = '10749')\
                     | Movie.objects.filter(vote_avg__gte = 8.0, genres = '10751') #드라마, 코미디, 로맨스, 패밀리 추천
-        
+
+    # 웹스크롤링 ()
+    url = 'https://www.kobis.or.kr/kobis/business/stat/online/onlineGenreStat.do?CSRFToken=sK9RAOafpyRvw9mdqZNNX2UWkSx3On9nXiL2MBvZ7Xo&loadEnd=0&searchType=search&sSearchYearFrom=2021&sSearchMonthFrom=08&sSearchYearTo=2022&sSearchMonthTo=02'
+    response = requests.get(url).text
+    data = BeautifulSoup(response, 'html.parser')
+    tv_genre = data.select_one('#tbody_0 > tr:nth-child(1) > td.tal')
+    change = {
+        '액션' : 28,
+        '애니메이션' : 16,
+        '드라마' : 18,
+        '범죄' : 80,
+        '멜로/로맨스' : 10749,
+        '코미디' : 35,
+        '스릴러' : 53,
+        '공포(호러)' : 27,
+        '미스터리' : 9648,
+        'SF' : 878,
+        '어드벤처' : 12,
+        '판타지' : 14,
+        '사극' : 36,
+        '전쟁' : 10752,
+        '가족' : 10751,
+        '다큐멘터리' : 99,
+        '뮤지컬' : 10402,
+        '서부극(웨스턴)' : 37,
+    }
+    # 추천 알고리즘
+
+    recommend_movies = Movie.objects.filter(genres__in = list(change.values()))
+    # print(tv_genre.text)
+    # print(change[tv_genre.text])
+    # for movie in movies:
+    #     for genre in movie.genres.all():
+    #         if change[tv_genre.text] == genre:
+    #             recommend_movies.append(movie)
+    #             break
+    recommend_message = '요새 유행하고 있는 장르만 모아뒀어요.'
+
+
     
-    if request.user.is_authenticated and request.user.movie_comments.all():
+    if request.user.is_authenticated and request.user.movie_comments.all(): #로그인된 유저가 하나라도 평점 남긴게 있을 때 마이무비 가동
         con = sqlite3.connect("db.sqlite3")
 
         #movies
@@ -152,6 +190,8 @@ def index(request):
             'now_movies' : now_movies,
             'my_movies' : my_movies,
             'sunho_genres' : sunho_genre.to_html(),
+            'recommend_movies' : recommend_movies,
+            'recommend_message' : recommend_message
         }
 
     else:
@@ -163,6 +203,8 @@ def index(request):
             'today_movies' : today_movies,
             'now_message' : now_message,
             'now_movies' : now_movies,
+            'recommend_movies' : recommend_movies,
+            'recommend_message' : recommend_message
         }
 
     return render(request, 'movies/index.html', context)

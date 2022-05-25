@@ -8,15 +8,15 @@
             width="150rem" height="150rem" style="border-radius: 50%;" alt="">
     </div>
     {% with followers=person.followers.all followings=person.followings.all%}
-    <div class = 'text-dark mt-5 pt-3 ms-0'>
-        <h2 class="text-dark">{{person.username}}<span class="fs-6 ms-3">{% if person.isgeneral == '0' %}판매회원{% else %}일반회원{% endif %}</span></h2>
-        <a class= 'text-decoration-none text-dark' href='#' data-bs-toggle="modal" data-bs-target="#exampleModal">팔로워 : <span id = 'followers'>{{ followers|length }}</span></a> / <a class= 'text-decoration-none text-dark' href='#' data-bs-toggle="modal" data-bs-target="#exampleModal2">팔로잉 : <span id = 'followings'>{{ followings|length }}</span></a>  
+    <div class = 'text-light mt-5 pt-3 ms-0'>
+        <h2 class="text-light">{{person.username}}<span class="fs-6 ms-3">{% if person.isgeneral == '0' %}판매회원{% else %}일반회원{% endif %}</span></h2>
+        <a class= 'text-decoration-none text-light' href='#' data-bs-toggle="modal" data-bs-target="#exampleModal">팔로워 : <span id = 'followers'>{{ followers|length }}</span></a> / <a class= 'text-decoration-none text-light' href='#' data-bs-toggle="modal" data-bs-target="#exampleModal2">팔로잉 : <span id = 'followings'>{{ followings|length }}</span></a>  
     <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">팔로워</h5>
+          <h5 class="text-dark modal-title" id="exampleModalLabel">팔로워</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -36,7 +36,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">팔로잉</h5>
+              <h5 class="text-dark modal-title" id="exampleModalLabel">팔로잉</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -86,7 +86,7 @@
 </div>
 <div id='content'>
     <div id = 'my-movie' style = 'display:block;'>
-        <h3 class="my-3" style="margin-left:50px;">{{person}}님이 평가하신 영화는 {{my_movies|length}}개 입니다.</h3>
+        <h3 class="text-light my-3" style="margin-left:50px;">{{person}}님이 평가하신 영화는 {{my_movies|length}}개 입니다.</h3>
     <div class = 'd-flex container border border-dark'>    
      <div class="row mt-5">
         {% for my_movie in my_movies %}
@@ -109,7 +109,7 @@
 </div>
 
 <div id = 'wish-movie' style = 'display:none;'>
-    <h3 class="my-3" style="margin-left:50px;">{{person}}님이 보고싶어 하시는 영화는 {{wish_movies|length}}개 입니다.</h3>
+    <h3 class="text-light my-3" style="margin-left:50px;">{{person}}님이 보고싶어 하시는 영화는 {{wish_movies|length}}개 입니다.</h3>
 <div class = 'd-flex container border border-dark'>    
  <div class="row mt-5">
     {% for wish_movie in wish_movies %}

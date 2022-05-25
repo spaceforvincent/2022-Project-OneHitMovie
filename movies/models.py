@@ -20,6 +20,8 @@ class Movie(models.Model) :
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_movies')
     wish_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='wish_movies')
 
+    
+
 class MovieComment(models.Model):
     STAR_CHOICES = [
         ('5',"★★★★★"),

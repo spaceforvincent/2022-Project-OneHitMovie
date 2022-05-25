@@ -18,25 +18,25 @@
   <title>일타무비</title>
   
 </head>
-<body class="bg-primary bg-opacity-25">
+<body>
   {% comment %} 로그인 상태의 출력 {% endcomment %}
   {% if request.user.is_authenticated%}
   
-  <nav class="d-flex navbar navbar-expand-lg bg-primary bg-opacity-25 ">
+  <nav class="d-flex bg-primary bg-opacity-25 navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand mx-5 mt-3" href="{% url 'movies:index' %}"><img src="{% static '일타무비.png' %}" style="width:120px; height:70px;"></a>
       <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <small>메뉴</small>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <select id='selection' class="form-select form-select-sm " onchange = 'onChange();' style="width:100px; height:40px;" aria-label="Default select example">
+        <select id='selection' class="form-select form-select-sm me-1" onchange = 'onChange();' style="width:100px; height:38px;" aria-label="Default select example">
           <option value="1">회원검색</option>
           <option value="2">영화검색</option>
         </select>
         <form id = 'search' class="d-flex me-5" method="POST" action="/movies/usersearch/">
           {% csrf_token %}        
           <input class="form-control me-2 " style="width:500px;" type="search" placeholder="찾고있는 회원이나 영화가 있나요?" name="searched" aria-label="Search">
-          <button class="btn btn-primary me-5" style="width: 80px;" type="submit"> 검색 </button>
+          <button class="btn btn-success me-5" style="width: 80px;" type="submit"> 검색 </button>
       </form>
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item">
@@ -135,3 +135,9 @@
   {% endblock script %}
 </body>
 </html>
+
+<style>
+  body {
+    background-image: url({% static '배경.jpg' %});
+  }
+  </style>

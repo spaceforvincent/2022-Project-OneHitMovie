@@ -2,11 +2,11 @@
 
 {% block content %}
 <div>
-<h2 class='d-flex justify-content-center mt-5'>{{ advertisement.title }}</h2>
-    <div class='d-flex justify-content-center'>
-    <img class = "d-flex justify-content-center mt-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+<h2 class='text-light d-flex justify-content-center mt-5'>{{ advertisement.title }}</h2>
+    <div class='d-flex justify-content-center bg-light bg-opacity-25'>
+    <img class = "d-flex justify-content-center my-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
             width="500px" height="500px" alt="">
-            <div class='my-5 mx-5'>{{ advertisement.content |linebreaks}} 
+            <div class='text-light my-5 mx-5'>{{ advertisement.content |linebreaks}} 
               {% if user == advertisement.user %}
   <div class='d-flex'>
               <a href="{% url 'community:update' advertisement.pk %}"><button class = 'btn btn-warning me-2'>수정</button></a>
@@ -20,16 +20,16 @@
           </div>
           </div>
 <hr>
-<h4>댓글 목록</h4>
+<h4 class='mx-3 text-light'>댓글 목록</h4>
 {% if comments %}
-  <p><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+  <p class='mx-3 text-light'><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
 {% endif %}
 <ul>
   {% for comment in comments %}
     <li class='d-flex'>
       <img src={% if user.picture %}"{{ user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
           width="50rem" height="50rem" style="border-radius: 50%;" alt="">
-      <p class="mx-3 text-dark fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-dark fs-6 mt-2">{{comment.content}}</p> 
+      <p class="mx-3 text-light fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-light fs-6 mt-2">{{comment.content}}</p> 
       <p class="mx-3 fs-6 mb-3 text-warning mt-2">{{comment.get_rating_display}}</p> 
       {% if comment.user == request.user %}
       {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}

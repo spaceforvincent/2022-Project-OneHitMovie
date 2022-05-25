@@ -25,8 +25,8 @@
 
 <div class="container-fluid ">
   <div class="row flex-nowrap">
-    <div class="col-3 bd-sidebar bg-primary bg-opacity-50">
-      <h5 class='d-flex justify-content-center my-3'>연관상품추천</h5>
+    <div class="col-3 bd-sidebar bg-light bg-opacity-25">
+      <h5 class='d-flex justify-content-center my-3 text-light'>연관상품추천</h5>
       {% if request.user.isgeneral == '0' %}
       <a class='d-flex justify-content-center btn btn-dark' href= "{% url 'community:create' movie.pk%}" role="button">홍보하기</a>
       {% endif %}
@@ -46,12 +46,12 @@
       <br>
     </div>
     <main class="col-9 py-md-3 pl-md-5 bd-content" role="main">
-      <h1 class="text-dark mt-3 mx-3">{{movie.title}}</h1>
+      <h1 class="text-light mt-3 mx-3">{{movie.title}}</h1>
       <hr>
-      <div class='d-flex text-dark mx-3'>
+      <div class='d-flex text-light mx-3'>
       <img src="https://image.tmdb.org/t/p/original/{{movie.poster_path}}" style="width:250px; height=350px;" alt="">
       <div class="mx-3">{{ movie.overview|linebreaks }}
-        <div class='d-flex'>장르 : 
+        <div class='text-warning d-flex'>장르 : 
           {% for genre in movie.genres.all %}
           {{genre}}
           &middot;

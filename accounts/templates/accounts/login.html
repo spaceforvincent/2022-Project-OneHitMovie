@@ -4,13 +4,13 @@
 
 {% block content %}
   
-<div class="position-absolute top-50 start-50 translate-middle">
+<div class="position-absolute top-50 start-50 translate-middle text-light">
   <h1 class="d-flex justify-content-center">로그인</h1>
   <hr>
   <form class="d-flex justify-content-center" action="" method="POST">
     {% csrf_token %}
     <div>{{ form.as_p }}</div>
-    <input class="btn btn-light" style = "height:80px;" type="submit" value="로그인">
+    <input class="btn btn-light" style = "margin-left:10px; height:80px;" type="submit" value="로그인">
   </form>
   <div class="d-flex justify-content-center text-light my-2">
       <a href="{% provider_login_url 'google' next='/movies/'%}"><img src="{% static '구글 로그인.png' %}" alt=""></a>
