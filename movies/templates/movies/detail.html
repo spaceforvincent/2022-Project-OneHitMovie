@@ -40,7 +40,7 @@
           {% endif %}
           style="width:150px; height:150px;"></a></li>
         {% empty %}
-        <p class="d-flex justify-content-center my-5">연관된 상품이 없습니다.</p>
+        <p class="text-light text-opacity-75 d-flex justify-content-center my-5">연관된 상품이 없습니다.</p>
         {% endfor %}
       </ul>
       <br>
@@ -65,35 +65,35 @@
         {% csrf_token %}
         {% if user in movie.like_users.all %}
         <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas-like" class="fas fa-heart fa-2xl" style="color:red;"></i></button>
-        <span id="like-count-{{ movie.pk }}" class="fs-5"> {{movie.like_users.all|length}} </span>
+        <span id="like-count-{{ movie.pk }}" class="text-light fs-5"> {{movie.like_users.all|length}} </span>
         {% else %}
-        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas-like" class="fas fa-heart fa-2xl" style="color:black;"></i></button>
-        <span id="like-count-{{ movie.pk }}" class="fs-5">{{movie.like_users.all|length}}</span>
+        <button id="like-{{ movie.pk }}" class="btn btn-link "><i id="fas-like" class="fas fa-heart fa-2xl" style="color:white;"></i></button>
+        <span id="like-count-{{ movie.pk }}" class="text-light fs-5">{{movie.like_users.all|length}}</span>
         {% endif %}
       </form>
-      <form class="wish-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:wish' movie.pk %}" method="POST" class="d-inline">
+      <form class="text-light wish-form" data-movie-id="{{ movie.pk }}" action="{% url 'movies:wish' movie.pk %}" method="POST" class="d-inline">
         {% csrf_token %}
         {% if user in movie.wish_users.all %}
         <button id="wish-{{ movie.pk }}" class="btn btn-link "><i id="fas-wish" class="fas fa-folder-plus fa-2xl" style="color:yellow;"></i></button>
         <small id='wish-text'>보고싶은 영화 리스트에 추가</small>
         {% else %}
-        <button id="wish-{{ movie.pk }}" class="btn btn-link "><i id="fas-wish" class="fas fa-folder-plus fa-2xl" style="color:black"></i></button>
+        <button id="wish-{{ movie.pk }}" class="btn btn-link "><i id="fas-wish" class="fas fa-folder-plus fa-2xl" style="color:white"></i></button>
         <small id='wish-text'>보고싶은 영화 리스트에 추가</small>
         {% endif %}
       </form>
       </div>
     
       <hr>
-      <h4 class="text-dark"> 댓글목록 </h4>
+      <h4 class="text-light"> 댓글목록 </h4>
       {% if comments%}
-        <p class="text-dark"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
+        <p class="text-light"><b> {{comments|length}}개의 댓글이 있습니다. </b></p>
       {% endif %}
       <ul>
       {% for comment in comments %}
       <li class='d-flex'>
         <img src={% if user.picture %}"{{ user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
             width="50rem" height="50rem" style="border-radius: 50%;" alt="">
-        <p class="mx-3 text-dark fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-dark fs-6 mt-2">{{comment.content}}</p> 
+        <p class="mx-3 text-light fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-light fs-6 mt-2">{{comment.content}}</p> 
         <p class="mx-3 fs-6 mb-3 text-warning mt-2">{{comment.get_rating_display}}</p> 
         {% if comment.user == request.user %}
         {% comment %} <a href="{% url 'movies:update' movie.pk %}">수정</a> {% endcomment %}
@@ -104,7 +104,7 @@
         {% endif %}
       </li>
       {%empty%}
-      <p>이 영화에 대한 평가를 남겨보세요!</p>
+      <p class='text-light'>이 영화에 대한 평가를 남겨보세요!</p>
       {% endfor %}
     </ul>
     <hr>
@@ -113,7 +113,7 @@
     
     <form class='d-flex justify-content-center' action="{% url 'movies:comments_create' movie.pk%}" method="POST">
       {% csrf_token %}
-      <table>
+      <table class='text-light'>
       {{comment_form.as_table}}
       </table>
       <input class = 'btn btn-primary' style='margin-top:30px; height:85px;'type="submit">

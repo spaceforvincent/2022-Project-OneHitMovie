@@ -17,6 +17,8 @@ from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform as sp_rand
 import requests
 from bs4 import BeautifulSoup
+import warnings
+warnings.filterwarnings('ignore')
 
 @require_safe
 def index(request):
@@ -97,20 +99,13 @@ def index(request):
         '뮤지컬' : 10402,
         '서부극(웨스턴)' : 37,
     }
-    # 추천 알고리즘
+    # kobis 추천 알고리즘
 
     recommend_movies = Movie.objects.filter(genres__in = list(change.values()))
-    # print(tv_genre.text)
-    # print(change[tv_genre.text])
-    # for movie in movies:
-    #     for genre in movie.genres.all():
-    #         if change[tv_genre.text] == genre:
-    #             recommend_movies.append(movie)
-    #             break
     recommend_message = '요새 유행하고 있는 장르만 모아뒀어요.'
 
 
-    
+    #회귀분석
     if request.user.is_authenticated and request.user.movie_comments.all(): #로그인된 유저가 하나라도 평점 남긴게 있을 때 마이무비 가동
         con = sqlite3.connect("db.sqlite3")
 
@@ -153,10 +148,33 @@ def index(request):
         ratings = pd.read_sql("SELECT movie_id,user_id,rating FROM movies_moviecomment", con)
         ratings = ratings.astype({'rating' : 'float'})
         ratings = ratings.merge(genres, how='inner', left_on='movie_id', right_index=True)
+
         user_rating = ratings[ratings['user_id'] == request.user.pk]
+ 
         genre_cols = genres.columns
         sunho_genre = pd.DataFrame(user_rating[genre_cols].sum().sort_values(ascending=False))[:5]
-        sunho_genre = sunho_genre.rename(columns={0:'평가한 영화 수'})
+        
+        ratings_v1 = ratings.copy()
+        ratings_v1 = ratings_v1.replace(0, np.nan)
+        
+        for col in genre_cols:
+            ratings_v1[col] = ratings_v1[col] * ratings_v1['rating']
+        user_profile_v1 = ratings_v1.groupby('user_id')[genre_cols].mean()
+        user_profile_v1 = user_profile_v1.transpose()
+        user_profile_v1 = pd.DataFrame(user_profile_v1[request.user.pk])
+
+        sunho_genre = pd.concat([sunho_genre,user_profile_v1],axis=1)[:5]
+        sunho_genre = sunho_genre.rename(columns={0:'평가한 영화 수', 2:'평균 평점'})
+        
+        def evaluate(x):
+            return str(int(x))+'개'
+
+        def rating(x):
+            return '⭐'+str(round(x,2))
+        
+        sunho_genre['평균 평점'] = sunho_genre['평균 평점'].transform(rating)
+        sunho_genre['평가한 영화 수'] = sunho_genre['평가한 영화 수'].transform(evaluate)
+
         #lasso
         model = Lasso()
         param_grid = {'alpha' : sp_rand()}
@@ -189,9 +207,10 @@ def index(request):
             'now_message' : now_message,
             'now_movies' : now_movies,
             'my_movies' : my_movies,
-            'sunho_genres' : sunho_genre.to_html(),
+            'sunho_genres' : sunho_genre.to_html(justify='center', col_space=[10,80]),
             'recommend_movies' : recommend_movies,
-            'recommend_message' : recommend_message
+            'recommend_message' : recommend_message,
+
         }
 
     else:
@@ -342,80 +361,3 @@ def wish(request, movie_pk):
         }
         return JsonResponse(context)
     return redirect('accounts:login')
-
-
-# def user_recommendation(request):
-#     con = sqlite3.connect("db.sqlite3")
-
-#     #movies
-#     movies = Movie.objects.all()
-    
-#     df = []
-#     for movie in movies:
-#         movie_genres= movie.genres.all()
-        
-#         genres = []
-#         for genre in movie_genres:
-#             genres.append(genre.name)
-#         df.append([movie.title, *genres])
-
-#     title = []
-#     for row in df:
-#         title.append(row.pop(0))
-        
-#     title = pd.DataFrame(title).rename(columns={0:'title'})
-#     genres = df
-    
-#     lst = []
-#     for i in range(len(genres)):
-#         lst.append('|'.join(genres[i]))
-
-#     lst = pd.DataFrame(lst).rename(columns={0:'genres'})
-    
-#     df = pd.concat([title,lst], axis=1)
-
-#     movies = pd.read_sql("SELECT * FROM movies_movie", con)
-#     movies = movies[['id','title']]
-#     movies.rename(columns={'id' : 'movie_id'}, inplace = True)
-    
-#     movies = pd.merge(movies,df, on='title')
-
-#     genres = movies['genres'].str.get_dummies(sep='|') #영화의 장르 여부를 1과 0으로 구분
-
-#     #rating
-#     ratings = pd.read_sql("SELECT movie_id,user_id,rating FROM movies_moviecomment", con)
-#     ratings = ratings.astype({'rating' : 'float'})
-#     ratings = ratings.merge(genres, how='inner', left_on='movie_id', right_index=True)
-#     user_rating = ratings[ratings['user_id'] == request.user.pk]
-#     genre_cols = genres.columns
-    
-#     #lasso
-#     model = Lasso()
-#     param_grid = {'alpha' : sp_rand()}
-#     rsearch = RandomizedSearchCV(estimator= model, param_distributions=param_grid, n_iter=200, cv=20, random_state=17)
-#     rsearch.fit(user_rating[genre_cols], user_rating['rating']) #학습
-    
-#     intercept = rsearch.best_estimator_.intercept_
-#     coef = rsearch.best_estimator_.coef_
-
-#     user_profile = pd.DataFrame([intercept, *coef], index=['intercept', *genre_cols], columns=['score'])
-#     predictions = rsearch.best_estimator_.predict(genres)
-#     genres['user_predictions'] = predictions
-
-#     #user가 아직 안본 영화들만 추리고 거기서 추천해주기
-#     rating_predictions = genres[~genres.index.isin(user_rating['movie_id'])].sort_values('user_predictions', ascending=False)
-#     rating_predictions = rating_predictions.merge(movies[['movie_id','title']], left_index=True, right_on = 'movie_id')
-    
-    
-
-#     my_movies = pd.DataFrame(Movie.objects.filter(id__in = list(rating_predictions['movie_id'])))
-    
-
-
-#     context = {
-
-#         'my_movies' : my_movies,
-
-#     }
-
-#     return render(request, 'movies/practice.html', context)

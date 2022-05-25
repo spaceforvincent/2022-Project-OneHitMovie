@@ -87,11 +87,11 @@
 <div id='content'>
     <div id = 'my-movie' style = 'display:block;'>
         <h3 class="text-light my-3" style="margin-left:50px;">{{person}}님이 평가하신 영화는 {{my_movies|length}}개 입니다.</h3>
-    <div class = 'd-flex container border border-dark'>    
+    <div class = 'd-flex container border border-light'>    
      <div class="row mt-5">
         {% for my_movie in my_movies %}
             <div class = 'd-flex justify-content-start col-1 ms-5' style='margin-left:50px; margin-right:50px;'>
-        <a class='text-decoration-none text-dark ' href="{% url 'movies:detail' my_movie.pk %}">
+        <a class='text-decoration-none text-light ' href="{% url 'movies:detail' my_movie.pk %}">
             <img src="https://image.tmdb.org/t/p/original/{{my_movie.poster_path}}" style = "width: 200px; height: 250px;" alt="">
             <div class="d-flex justify-content-center ms-2">{{my_movie.title|truncatechars:15}}</div>
             {% for comment in my_movie.movie_comments.all %}
@@ -129,14 +129,14 @@
 {% comment %} 판매자 프로필 {% endcomment %}
 {% else %}
 <div class = 'my-5'>
-    <h2 class='d-flex justify-content-center'>{{person.username}}님의 씨네마켓</h2>
-    <div class = 'd-flex container border border-dark'>    
+    <h2 class='d-flex justify-content-center text-light '>{{person.username}}님의 씨네마켓</h2>
+    <div class = 'd-flex container border border-light'>    
         <div class="my-5 row">
             {% for advertisement in advertisements %}
             <div class = 'd-flex col-3 justify-content-start ms-5 mx-5' >
-                <a class='text-decoration-none text-dark' href="{% url 'community:detail' advertisement.pk %}">
+                <a class='text-decoration-none text-light' href="{% url 'community:detail' advertisement.pk %}">
                     <img src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} style = "width: 200px; height: 250px;" alt="">
-                    <span class="d-flex justify-content-center ms-2">{{advertisement.title}}</span>
+                    <span class="d-flex justify-content-center text-light mt-3 ms-2">{{advertisement.title}}</span>
                 </a>
             </div>
             {% endfor %}

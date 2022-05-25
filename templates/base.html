@@ -24,7 +24,7 @@
   
   <nav class="d-flex bg-primary bg-opacity-25 navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand mx-5 mt-3" href="{% url 'movies:index' %}"><img src="{% static '일타무비.png' %}" style="width:120px; height:70px;"></a>
+      <a class="navbar-brand mx-5 mt-0" href="{% url 'movies:index' %}"><img src="{% static '일타무비2.png' %}" style="width:120px; height:70px;"></a>
       <button class="navbar-toggler bg-light border-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <small>메뉴</small>
       </button>
@@ -42,21 +42,21 @@
           <li class="nav-item">
             <a class="nav-link active text-dark p-0" href="{% url 'accounts:profile' user.username %}">
               <div>
-              <img class='mt-2'src= {% static '마이페이지.png'%} style="width:90px; height:70px;">
+              <img class='mt-2'src= {% static '마이페이지2.png'%} style="width:90px; height:70px;">
             </div>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active mt-1 p-0" href="{% url 'community:index'%}">
+            <a class="nav-link active mt-2 p-0" href="{% url 'community:index'%}">
               <div>
-              <img src={%static '씨네마켓.png'%} style="width:90px; height:70px;">
+              <img src={%static '씨네마켓2.png'%} style="width:90px; height:70px;">
               </div>
             </a>
           </li>
           <li class="nav-item">
-              <form class="mt-1 p-0"action="{% url 'accounts:logout' %}" method = "POST">
+              <form class="mt-2 ms-0 p-0"action="{% url 'accounts:logout' %}" method = "POST">
                 {% csrf_token %}
-                <input type= "image" src = {%static '로그아웃.png'%} style="width:90px; height:70px;">
+                <input type= "image" src = {%static '로그아웃2.png'%} style="width:90px; height:70px;">
               </form>
           </li>
         </ul>
@@ -71,7 +71,7 @@
     
     <nav class="navbar navbar-expand-lg bg-primary bg-opacity-25">
       <div class="d-flex container-fluid">
-        <a class="navbar-brand ms-5" href="{% url 'movies:index' %}"><img src="{% static '일타무비.png' %}" style="width:120px; height:70px;"></a>
+        <a class="navbar-brand ms-5" href="{% url 'movies:index' %}"><img src="{% static '일타무비2.png' %}" style="width:120px; height:70px;"></a>
         <button class="navbar-toggler bg-light border-light me-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <small>메뉴</small>
         </button>
@@ -88,12 +88,12 @@
           <ul class="navbar-nav mx-5 justify-content-end">
             <li class="nav-item" style = "margin-left:100px;">
               <a class="nav-link active" href="{% url 'accounts:login'%}">
-                <img src={%static '로그인.png'%} style="width:90px; height:70px;">
+                <img src={%static '로그인2.png'%} style="width:90px; height:70px;">
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'accounts:signup' %}">
-                <img src={%static '회원가입.png'%} style="width:90px; height:70px;">
+                <img src={%static '회원가입2.png'%} style="width:90px; height:70px;">
               </a>
             </li>
           </ul>

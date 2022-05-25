@@ -3,7 +3,7 @@
 {% block content %}
 <div>
 <h2 class='text-light d-flex justify-content-center mt-5'>{{ advertisement.title }}</h2>
-    <div class='d-flex justify-content-center bg-light bg-opacity-25'>
+    <div class='d-flex justify-content-center bg-light bg-opacity-25' style="margin-left:250px;width:1000px;">
     <img class = "d-flex justify-content-center my-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
             width="500px" height="500px" alt="">
             <div class='text-light my-5 mx-5'>{{ advertisement.content |linebreaks}} 
@@ -40,7 +40,7 @@
       {% endif %}
     </li>
   {% empty %}
-    <p>댓글이 없어요..</p>
+    <p class='text-light'>댓글이 없어요..</p>
   {% endfor %}
 </ul>
 

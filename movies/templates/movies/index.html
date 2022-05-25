@@ -17,8 +17,10 @@
   <div id='my_movie' style='display:block;'>
     <h1 class="logo mt-5"><b>마이무비</b></h1>
     {% if request.user.is_authenticated%}
-    <h4 class="d-flex justify-content-center mt-4 mb-0">{{request.user.username}}님이 선호하시는 장르를 기반으로 영화를 추천합니다.</h4>
+    <h4 class="d-flex justify-content-center mt-4 mb-0">{{request.user.username}}님이 남겨주신 영화 평점 데이터를 기반으로 영화를 추천합니다.</h4>
     <small class='d-flex mt-3 justify-content-center'>{{sunho_genres|safe}}</small>
+    <small class='d-flex mt-3 justify-content-center'>{{user_rating_hist|safe}}</small>
+
 
     {% if my_movies %}
       <div class="d-flex container">
@@ -124,7 +126,7 @@
     <div id='recommend_movie' style='display:none;'>
       <h1 class="logo mt-5"><b>장르 어답터</b></h1>
       <h4 class="d-flex justify-content-center mt-4 mb-0">{{recommend_message}}</h4>
-      <small class='d-flex justify-content-center'>(영화관 입장권 통합 전산망에서 장르 데이터를 추출해 추천 영화 서비스를 제공해 드리고 있어요)</small>
+      <small class='d-flex justify-content-center'>KOBIS(영화관 입장권 통합 전산망) 장르분포/점유율 통계 웹 크롤링 데이터를 기반으로 합니다.</small>
       
       <div class="d-flex container ">
         <div class="slider m-3" style="padding-top:50px; padding-bottom:150px;" id="mySlider">

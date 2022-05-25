@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<h1 class = "d-flex my-5 justify-content-center">회원정보수정</h1>
-<form action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
+<h1 class = "text-light d-flex my-5 justify-content-center">회원정보수정</h1>
+<form class = 'text-light' action="{% url 'accounts:update' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class = "d-flex my-5" style="margin-left:500px;">이메일 : {{form.email}}</div>
     <div class = "my-5" style="margin-left:500px;">프로필사진 : {{form.picture}}</div>
