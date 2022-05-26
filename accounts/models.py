@@ -11,4 +11,4 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     picture = models.ImageField(blank=True, upload_to='images/', null=True)
     birthday = models.DateField(blank=True, auto_now=False, null=True)
-    blog_url = models.URLField(max_length = 60, blank=True, null=True)
+    blog_url = models.URLField(max_length = 300, blank=True, null=True)

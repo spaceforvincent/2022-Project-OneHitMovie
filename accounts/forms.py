@@ -17,7 +17,6 @@ class CustomUserChangeForm(UserChangeForm):
 	        'placeholder': '당신을 소개해주세요.',
 	        'rows' : 5,
 	        'cols' : 30,
-			'style' : 'width:400px; height:200px;'
 	        }
 	    ),
     )
@@ -28,7 +27,6 @@ class CustomUserChangeForm(UserChangeForm):
 		attrs={
 		'class': 'my-email form-control input-sm',
 		'placeholder': '이메일 주소를 입력해주세요',
-		'style' : 'width:300px;'
 		}
 	),
 	required=False
@@ -40,7 +38,6 @@ class CustomUserChangeForm(UserChangeForm):
 		attrs={
 		'class': 'my-blog_url form-control input-sm',
 		'placeholder': '대표 SNS 주소를 알려주세요',
-		'style' : 'width:400px;'
 		}
 	),
 	required=False
@@ -96,6 +93,17 @@ class CustomUserCreationForm(UserCreationForm):
 		attrs={
 		'class': 'my-blog_url form-control',
 		'placeholder': '대표 SNS 주소를 알려주세요',
+		'style' : 'width:300px;'
+		},
+	),
+	)
+
+	email = forms.CharField(
+	label='이메일',
+	widget=forms.TextInput(
+		attrs={
+		'class': 'my-email form-control',
+		'placeholder': '이메일 주소를 알려주세요',
 		'style' : 'width:300px;'
 		},
 	),
