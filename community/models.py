@@ -10,6 +10,7 @@ class Advertisement(models.Model):
     movie= models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='advertisements')
     title = models.CharField(max_length=100)
     picture = models.ImageField(blank=True, upload_to='images/', null=True)
+    website = models.CharField(max_length=300)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

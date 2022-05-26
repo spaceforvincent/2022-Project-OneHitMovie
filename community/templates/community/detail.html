@@ -6,6 +6,7 @@
     <div class='d-flex justify-content-center bg-light bg-opacity-25' style="margin-left:250px;width:1000px;">
     <img class = "d-flex justify-content-center my-5" src={% if advertisement.picture %}"{{ advertisement.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
             width="500px" height="500px" alt="">
+
             <div class='text-light my-5 mx-5'>{{ advertisement.content |linebreaks}} 
               {% if user == advertisement.user %}
   <div class='d-flex'>
@@ -16,7 +17,8 @@
   </form>
 </div>
 {% endif %}
-
+<br>
+<a href ="{{advertisement.website}}">[판매 사이트로 이동]</a>
           </div>
           </div>
 <hr>

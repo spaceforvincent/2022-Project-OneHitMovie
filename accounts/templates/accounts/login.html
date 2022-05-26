@@ -9,7 +9,9 @@
   <hr>
   <form class="d-flex justify-content-center" action="" method="POST">
     {% csrf_token %}
-    <div>{{ form.as_p }}</div>
+    <table>
+    <tr>{{ form.as_table }}</tr>
+    </table>
     <input class="btn btn-light" style = "margin-left:10px; height:80px;" type="submit" value="로그인">
   </form>
   <div class="d-flex justify-content-center text-light my-2">

@@ -53,6 +53,18 @@ class AdvertisementForm(forms.ModelForm):
 	    ),
     )
 
+    website = forms.CharField(
+        label = '판매 사이트',
+        widget = forms.TextInput(
+            attrs={
+                'class': 'my-website form-control',
+	            'placeholder': '판매 URL 주소를 등록해주세요.',
+			    'style' : 'width:400px;'
+            }
+        )
+
+    )
+
     class Meta:
         model = Advertisement
-        fields = ('title', 'content', 'picture')
+        fields = ('title', 'content', 'picture', 'website')
