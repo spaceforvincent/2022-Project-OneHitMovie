@@ -91,8 +91,8 @@
       <ul>
       {% for comment in comments %}
       <li class='d-flex'>
-        <img src={% if user.picture %}"{{ user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
-            width="50rem" height="50rem" style="border-radius: 50%;" alt="">
+        <a href="{% url 'accounts:profile' comment.user.username%}"><img src={% if comment.user.picture %}"{{ comment.user.picture.url }}"{% else %}"https://i.stack.imgur.com/34AD2.jpg"{% endif %} 
+            width="50rem" height="50rem" style="border-radius: 50%;" alt=""></a>
         <p class="mx-3 text-light fs-6 mt-2">{{comment.user}} : </p> <p class="mx-3 text-light fs-6 mt-2">{{comment.content}}</p> 
         <p class="mx-3 fs-6 mb-3 text-warning mt-2">{{comment.get_rating_display}}</p> 
         {% if comment.user == request.user %}
@@ -153,7 +153,7 @@
             likeButton.setAttribute('style', 'color:red;')
           }
           else{
-            likeButton.setAttribute('style', 'color:black;')
+            likeButton.setAttribute('style', 'color:white;')
           }
           likeCount.innerText = count
         })
@@ -180,7 +180,7 @@ const wishForms = document.querySelectorAll('.wish-form')
             wishText.innerText='보고싶은 영화 리스트에서 제거'
           }
           else{
-            wishButton.setAttribute('style', 'color:black;')
+            wishButton.setAttribute('style', 'color:white;')
             wishText.innerText='보고싶은 영화 리스트에 추가'
           }
         })

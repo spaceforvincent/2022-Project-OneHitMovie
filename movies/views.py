@@ -55,7 +55,7 @@ def index(request):
         today_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '10770') #TV Movies
     
     #지금의 영화
-    if int(datetime.datetime.now().strftime("%H")) in range(0,7):
+    if int(datetime.datetime.now().strftime("%H")) in range(0,8):
         now_message = "새벽감성... 잠이 안오시나요? 역사, 서부극 배달이요~"
         now_movies = Movie.objects.filter(vote_avg__gte = 8.0, genres = '36') \
                         | Movie.objects.filter(vote_avg__gte = 8.0, genres = '37')#역사, 서부극 영화 추천
