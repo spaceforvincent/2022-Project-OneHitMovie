@@ -1,2 +1,47 @@
 [
+{
+    "model": "community.advertisement",
+    "pk": 1,
+    "fields": {
+        "user": 5,
+        "movie": 479718,
+        "title": "구미 1등 마라샹궈 맛집!!",
+        "picture": "images/하지마라샹궈_WwTC4JL.jpeg",
+        "website": "https://www.kobis.or.kr/kobis/business/stat/online/onlineGenreStat.do?CSRFToken=2HLsR6zeHM5KFX1VbwBXWDX_jfh5pqFb3zrI5edUJLc&loadEnd=0&searchType=search&sSearchYearFrom=2021&sSearchMonthFrom=08&sSearchYearTo=2022&sSearchMonthTo=02",
+        "content": "영화 즐겁게 보셨나요 ^^\r\n저도 보는 동안 통쾌한 액션 덕분에 스트레스가 확 풀렸네요~~\r\n중간에 장첸이 마라샹궈를 맛있게 먹는 모습... 많은 분들이 군침을 흘리셨을 거라고 생각하는데요!\r\n저희 구미 '하지마라샹궈' 에서는 매일 신선한 재료로 여러분들께 맛있는 마라샹궈를 제공하고 있습니다!\r\n한번 오셔서 맛들 보셔요 ~~^^,,,",
+        "created_at": "2022-05-22T02:53:21.981Z",
+        "updated_at": "2022-05-26T00:35:02.431Z",
+        "like_users": []
+    }
+},
+{
+    "model": "community.advertisement",
+    "pk": 2,
+    "fields": {
+        "user": 5,
+        "movie": 24428,
+        "title": "아이들이 참 좋아하는 인피니트 건틀렛 ^^",
+        "picture": "images/다운로드_LuaBvTX.jpeg",
+        "website": "1",
+        "content": "아이들이 참 갖고 싶어하는 장난감이죠~~\r\n\r\n사이트 방문 혹은 문의 바랍니다 ^^",
+        "created_at": "2022-05-24T01:46:28.487Z",
+        "updated_at": "2022-05-26T00:30:59.867Z",
+        "like_users": []
+    }
+},
+{
+    "model": "community.advertisement",
+    "pk": 3,
+    "fields": {
+        "user": 8,
+        "movie": 479718,
+        "title": "아이고 위에 사장님 영화 안보셨나봐",
+        "picture": "images/다운로드_1.jpeg",
+        "website": "1",
+        "content": "마라샹궈가 아니고 마라롱샤죠~~\r\n마라롱샤 드시러 오세요!!\r\n구미 1등입니다!!",
+        "created_at": "2022-05-24T16:18:25.887Z",
+        "updated_at": "2022-05-24T16:18:25.887Z",
+        "like_users": []
+    }
+}
 ]
